@@ -7,6 +7,23 @@ const ai = new GoogleGenAI({
     apiKey: process.env.GEMINI_API_KEY 
 }); 
 
+// =========================================================================
+// === FUNÇÃO AUXILIAR PARA DETERMINAR A SAUDAÇÃO ============================
+// =========================================================================
+
+/**
+ * Retorna 'bom dia.' ou 'boa tarde.' baseado na hora local (0 a 23).
+ * Considera 'bom dia' antes das 12h.
+ */
+function getGreetingByTime() {
+    const hour = new Date().getHours();
+    if (hour < 12) {
+        return 'bom dia.';
+    } else {
+        return 'boa tarde.';
+    }
+}
+
 /**
  * Handler para a função serverless do Vercel.
  */
@@ -58,6 +75,9 @@ export default async function (req, res) {
         // 2. Define o conteúdo de texto para a IA (o brief do usuário ou um fallback)
         const textToAnalyze = brief || 'As informações devem ser estritamente extraídas do arquivo anexado.';
         
+        // 3. Obtém a saudação baseada na hora
+        const timeGreeting = getGreetingByTime();
+
         // =========================================================================
         // === O PROMPT FINAL COM AS 4 ETAPAS E REGRAS DE FORMATAÇÃO (E-MAIL) ========
         // =========================================================================
@@ -74,13 +94,13 @@ ETAPAS DE GERAÇÃO E FORMATAÇÃO:
 Crie uma frase concisa de até 8 palavras que resuma o ponto principal do conteúdo fornecido. Esta frase deve ser a PRIMEIRA LINHA da sua resposta e deve estar **TODA EM MAIÚSCULO**.
 
 2ª ETAPA - SAUDAÇÃO INICIAL:
-Após o Assunto, pule duas linhas. Inicie a mensagem do e-mail com a saudação exata: "Prezados(as) Senhores(as) Diretores(as),".
+Após o Assunto, pule duas linhas. Inicie a mensagem do e-mail com a saudação exata: "Prezados(as), ${timeGreeting}".
 
 3ª ETAPA - CORPO DO TEXTO (Comunicação Oficial):
 Mantenha um tom de formalidade (comunicações oficiais) e use uma linguagem aprimorada, adequada para um e-mail profissional. O texto deve ser conciso (máximo de 5 parágrafos curtos) e profissional.
 O texto DEVE começar com a frase: "Vimos por meio desta, [continue o texto...]"
 Transforme o conteúdo fornecido (Resumo e/ou Arquivo) em um corpo de texto coeso, claro e profissional.
-Utilize negrito (asteriscos duplos, **) nas informações mais importantes, como prazos ou ações críticas. Use quebras de linha padrão de e-mail.
+Utilize negrito (asteriscos único, *) nas informações mais importantes, como prazos ou ações críticas. Use quebras de linha padrão de e-mail.
 
 4ª ETAPA - ENCERRAMENTO PADRONIZADO:
 Após o Corpo do Texto (separado por uma ou duas linhas vazias), adicione o encerramento **EXATAMENTE** como especificado abaixo. **IMPORTANTE:** Não utilize formatação de WhatsApp (negrito/itálico).
@@ -96,7 +116,7 @@ Conteúdo do Usuário para análise (Texto):
 ${textToAnalyze}
 `;
         
-        // 3. Adiciona o prompt ao array de conteúdos
+        // 4. Adiciona o prompt ao array de conteúdos
         contents.push({ text: prompt });
 
 
