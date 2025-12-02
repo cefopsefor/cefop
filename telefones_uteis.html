@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEFOP - Telefones Úteis SEDUC</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fb;
+        }
+        /* Estilo para inputs no modo de edição */
+        .editable-input {
+            border: 1px solid #ccc;
+            padding: 2px 6px;
+            border-radius: 4px;
+            width: 100%;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            color: #1f2937;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-start justify-center p-4 sm:p-8">
+
+    <div class="w-full max-w-4xl bg-white shadow-2xl rounded-xl p-6 sm:p-8 mt-10">
+
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">Telefones Úteis SEDUC</h1>
+
+        <div class="mb-6">
+            <a 
+                href="https://www.seduc.ce.gov.br/2024/11/05/quemquem/" 
+                target="_blank" 
+                class="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold transition duration-150"
+            >
+                <i class="fas fa-link mr-2"></i> QUEM É QUEM / SEDUC
+            </a>
+        </div>
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6">
+            <p id="total-telefones" class="text-lg text-gray-500 font-semibold mb-2 sm:mb-0">Carregando total...</p>
+            
+            <button id="import-agenda-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white 
+            text-sm font-semibold 
+            py-2 px-4 rounded-lg transition duration-300 shadow-md">
+                Exportar Lista Completa (CSV)
+            </button>
+        </div>
+        
+        <div class="mb-6">
+            <label for="search-input" class="block text-sm font-medium text-gray-700 mb-2">
+                Pesquisar por Setor ou Sigla:
+            </label>
+            <input 
+                type="text" 
+                id="search-input" 
+                placeholder="Digite o nome do setor, sigla ou telefone (ex: 'COGEP', 'APOIO', '3106.4193')..." 
+                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 text-base"
+            >
+        </div>
+        
+        <div id="results-container" class="space-y-4">
+            <p class="text-gray-500">Digite pelo menos 3 letras para iniciar a busca.</p>
+        </div>
+        
+        <div class="flex justify-end mt-6">
+            <a href="index.html" class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200 flex items-center" title="Voltar à Página Inicial">
+                <i class="fas fa-home mr-2"></i> Voltar à Página Inicial
+            </a>
+        </div>
+        </div>
+
+    
+    <script>
+        // =========================================================================================
+        // === INÍCIO DO BLOCO DE DADOS: TELEFONES ÚTEIS SEDUC =====================================
+        // =========================================================================================
+
+        const initialTelefonesData = [
+            {"setor": "COORDENADORIA DE GESTÃO DE PESSOAS (COGEP)", "telefone": "3106.4193"},
+            {"setor": "CEFAE (COGEP)", "telefone": "3106.4215"},
+            {"setor": "CECOP (COGEP)", "telefone": "3106.4215"},
+            {"setor": "CEMUP (COGEP)", "telefone": "3106.4194, 3106.4195"},
+            {"setor": "CELOE (COGEP)", "telefone": "3106.4216"},
+            {"setor": "APOIO (COGEP)", "telefone": "3106.4187"},
+            {"setor": "ARTICULAÇÃO (COGEP)", "telefone": "3106.4188"},
+            {"setor": "CECOB/APOS (COGEP)", "telefone": "3106.4181"},
+            {"setor": "CEDEP (COGEP)", "telefone": "3106.4184"},
+            {"setor": "CEFOP (COGEP)", "telefone": "3106.4189, 3106.4190"},
+            {"setor": "CEMOV (COGEP)", "telefone": "3106.4185, 3106.4186"},
+            {"setor": "CEPRO (COGEP)", "telefone": "3106.4182"},
+            {"setor": "RECEPÇÃO (COGEP)", "telefone": "3106.4191"},
+            {"setor": "APOIO (COEDH)", "telefone": "3106.4225, 3106.4221"},
+            {"setor": "COEDH", "telefone": "3106.4224"},
+            {"setor": "CEMEP (COEDH)", "telefone": "3106.4223"},
+            {"setor": "ARTICULAÇÃO (COEDH)", "telefone": "3106.4220"},
+            {"setor": "CEGEF (COEDH)", "telefone": "3106.4217"},
+            {"setor": "CEMPE (COEDH)", "telefone": "3106.4218"},
+            {"setor": "CEPEC (COEDH)", "telefone": "3106.4219"},
+            {"setor": "COORDENAÇÃO (COEDH)", "telefone": "3106.4222"},
+            {"setor": "CEDEA/SEFOR 1", "telefone": "3106.4204"},
+            {"setor": "CEDEA/SEFOR 2", "telefone": "3106.4205"},
+            {"setor": "CEDEA/SEFOR 3", "telefone": "3106.4206"},
+            {"setor": "CEFOP (SEFOR)", "telefone": "3106.4207"},
+            {"setor": "CEGAF/SEFOR 1", "telefone": "3106.4208"},
+            {"setor": "CEGAF/SEFOR 2", "telefone": "3106.4209"},
+            {"setor": "CEGAF/SEFOR 3", "telefone": "3106.4210"},
+            {"setor": "CEGEP/SEFOR 1", "telefone": "3106.4201"},
+            {"setor": "CEGEP/SEFOR 2", "telefone": "3106.4202"},
+            {"setor": "CEGEP/SEFOR 3", "telefone": "3106.4203"},
+            {"setor": "RECEPÇÃO/SEFOR", "telefone": "3106.4211"},
+            {"setor": "CEPOR (COESC)", "telefone": "3106.4228, 3106.4229, 3106.4230"},
+            {"setor": "APOIO (COPES)", "telefone": "3106.4226"},
+            {"setor": "COORDENAÇÃO (COPES)", "telefone": "3106.4227"},
+            {"setor": "CEALE (COALE)", "telefone": "3106.4231, 3106.4232"},
+            {"setor": "CADIN (COEPS)", "telefone": "3106.4196"},
+            {"setor": "CIEFP (COEPS)", "telefone": "3106.4197"},
+            {"setor": "COEPS", "telefone": "3106.4198"},
+            {"setor": "COORDENAÇÃO (COEPS)", "telefone": "3106.4233"},
+            {"setor": "COCIQ GERAL", "telefone": "3106.4234"},
+            {"setor": "APOIO (COPEM)", "telefone": "3106.4212, 3106.4192"},
+            {"setor": "CECON (COPEM)", "telefone": "3106.4213, 3106.4214"},
+            {"setor": "COORDENAÇÃO (COPEM)", "telefone": "3106.4235"},
+            {"setor": "CECOF (COFIN)", "telefone": "3106.4199, 3106.4200"},
+            {"setor": "APOIO (COADE)", "telefone": "3106.4243"},
+            {"setor": "CEADE (COADE)", "telefone": "3106.4245"},
+            {"setor": "CEDRA (COADE)", "telefone": "3106.4246"},
+            {"setor": "CEIPE (COADE)", "telefone": "3106.4241, 3106.4242"},
+            {"setor": "COORDENAÇÃO (COADE)", "telefone": "3106.4247"},
+            {"setor": "PÉ DE MEIA (COADE)", "telefone": "3106.4244"},
+            {"setor": "CAE (ASCOM)", "telefone": "3106.4258"},
+            {"setor": "RECEPÇÃO GABINETE", "telefone": "3106.4268"},
+            {"setor": "APOIO GABINETE 1", "telefone": "3106.4266, 3106.4267"},
+            {"setor": "RECEPÇÃO SECRETARIA 1", "telefone": "3106.4269"},
+            {"setor": "APOIO (CODIP)", "telefone": "3106.4239"},
+            {"setor": "CEDET (CODIP)", "telefone": "3106.4236, 3106.4237"},
+            {"setor": "CEPAE (CODIP)", "telefone": "3106.4238"},
+            {"setor": "NÚCLEO DE PROJETOS (CODIP)", "telefone": "3106.4240"},
+            {"setor": "ALMOXARIFADO", "telefone": "3106.4151, 3106.4152"},
+            {"setor": "CEASE (COGEA)", "telefone": "3106.4163"},
+            {"setor": "COGEA", "telefone": "3106.4164, 3106.4165"},
+            {"setor": "PATRIMONIO (COGEA)", "telefone": "3106.4166"},
+            {"setor": "GERAL (COETI)", "telefone": "3106.4248, 3106.4249"},
+            {"setor": "APOIO (COGEM)", "telefone": "3106.4251, 3106.4250"},
+            {"setor": "CEGEM (COGEM)", "telefone": "3106.4250"},
+            {"setor": "GERAL (COGEM)", "telefone": "3106.4252"},
+            {"setor": "CEDIN (COEDP)", "telefone": "3106.4259"},
+            {"setor": "CEORC (COEDP)", "telefone": "3106.4262"},
+            {"setor": "CEPPE (COEDP)", "telefone": "3106.4263"},
+            {"setor": "COORDENAÇÃO PABX (COEDP)", "telefone": "3106.4264"},
+            {"setor": "NARF (COEDP)", "telefone": "3106.4260"},
+            {"setor": "RECEPÇÃO (COEDP)", "telefone": "3106.4261"},
+            {"setor": "TERCEIRIZAÇÃO (COEDP)", "telefone": "3106.4253"},
+            {"setor": "ARQUIVO (COADM)", "telefone": "3106.4153, 3106.4150"},
+            {"setor": "MANUTENÇÃO (COADM)", "telefone": "3106.4149"},
+            {"setor": "TRANSPORTE (COADM)", "telefone": "3106.4154"},
+            {"setor": "AQUISIÇÕES (ASTIN)", "telefone": "3106.4254"},
+            {"setor": "ASSESSOR (ASTIN)", "telefone": "3106.4255"},
+            {"setor": "ATENDIMENTO (ASTIN)", "telefone": "3106.4257, 3106.4265"},
+            {"setor": "SUPORTE/INFRAESTRUTURA (ASTIN)", "telefone": "3106.4256"},
+            {"setor": "ASSESSORIA (COINF)", "telefone": "3106.4158"},
+            {"setor": "ENGENHARIA (COINF)", "telefone": "3106.4159"},
+            {"setor": "GECOM (COINF)", "telefone": "3106.4160"},
+            {"setor": "GESTAO DE OBRA (COINF)", "telefone": "3106.4161, 3106.4162"},
+            {"setor": "ASCOV", "telefone": "3106.4167"},
+            {"setor": "ASJUR/ANÁLISE E DIGITAÇÃO", "telefone": "3106.4177"},
+            {"setor": "ASJUR/APOIO", "telefone": "3106.4178"},
+            {"setor": "ASJUR/CONTRATOS", "telefone": "3106.4179"},
+            {"setor": "ASJUR/SINDICANCIA", "telefone": "3106.4176"},
+            {"setor": "BIBLIOTECA CDIE", "telefone": "3106.4180"},
+            {"setor": "CEDRE/DOC ESCOLAR", "telefone": "3106.4155, 3106.4156, 3106.4157"},
+            {"setor": "GRÁFICA", "telefone": "3106.4170"},
+            {"setor": "LICITAÇÃO - ASLIC", "telefone": "3106.4174, 3106.4175"},
+            {"setor": "LOGISTICA", "telefone": "3106.4171"},
+            {"setor": "OUVIDORIA", "telefone": "3106.4168, 3106.4169"},
+            {"setor": "PROTOCOLO", "telefone": "3106.4172"},
+            {"setor": "RECEPÇÃO (TÉRREO)", "telefone": "3106.4173"}
+        ];
+
+        // =========================================================================================
+        // === FIM DO BLOCO DE DADOS ===============================================================
+        // =========================================================================================
+
+        let dataArray = [];
+        const LOCAL_STORAGE_KEY = 'telefones_data_updated';
+        const searchInput = document.getElementById('search-input');
+        const resultsContainer = document.getElementById('results-container');
+        const totalTelefonesElement = document.getElementById('total-telefones');
+        const exportAgendaBtn = document.getElementById('import-agenda-btn'); // Botão de exportação
+        
+        const detailTextColor = 'text-gray-600'; 
+
+
+        /**
+         * 1. Carrega os dados (preferindo o localStorage) e inicializa.
+         */
+        function loadData() {
+            const storedData = localStorage.getItem(LOCAL_STORAGE_KEY);
+            let telefonesFonte;
+            if (storedData) {
+                try {
+                    telefonesFonte = JSON.parse(storedData);
+                } catch (e) {
+                    telefonesFonte = initialTelefonesData;
+                }
+            } else {
+                telefonesFonte = initialTelefonesData;
+            }
+
+            // Normaliza os dados
+            dataArray = telefonesFonte.map((item, index) => ({ 
+                ...item, 
+                // Cria um ID único a partir do setor ou índice
+                data_id: item.setor ? item.setor.replace(/[\s\W]+/g, '_') + index : index 
+            }));
+
+            if (dataArray.length > 0) {
+                totalTelefonesElement.textContent = `Total de Contatos Registrados: ${dataArray.length}`;
+            } else {
+                totalTelefonesElement.textContent = "Erro: Dados de telefones não encontrados ou vazios.";
+                totalTelefonesElement.classList.add('text-red-500');
+            }
+        }
+
+        /**
+         * 2. Salva o array atualizado no localStorage.
+         */
+        function saveData() {
+            // Remove a chave interna 'data_id' antes de salvar
+            const dataToSave = dataArray.map(e => {
+                const { data_id, ...rest } = e;
+                return rest;
+            });
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(dataToSave));
+        }
+
+        /**
+         * 3. Filtra os dados com base no input de pesquisa e renderiza a lista.
+         */
+        function searchAndRender() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            
+            if (searchTerm.length < 3 && searchTerm.length > 0) {
+                resultsContainer.innerHTML = `<p class="text-gray-500">Continue digitando... (3 letras ou mais)</p>`;
+                return;
+            } else if (searchTerm.length === 0) {
+                resultsContainer.innerHTML = `<p class="text-gray-500">Digite pelo menos 3 letras para iniciar a busca.</p>`;
+                return;
+            }
+
+            const filteredTelefones = dataArray.filter(item => {
+                const normalizedSearchTerm = searchTerm.replace(/\s/g, '').replace(/\./g, '');
+                
+                // Normaliza o telefone para busca (remove espaços e pontos)
+                const normalizedPhone = item.telefone ? item.telefone.replace(/\s/g, '').replace(/\./g, '') : '';
+                
+                return item.setor.toLowerCase().includes(searchTerm) || normalizedPhone.includes(normalizedSearchTerm);
+            });
+
+            if (filteredTelefones.length === 0) {
+                resultsContainer.innerHTML = `<p class="text-red-500 font-medium">Nenhum contato encontrado para "${searchTerm}".</p>`;
+            } else {
+                renderPhoneList(filteredTelefones);
+            }
+        }
+
+        /**
+         * 4. Gera o HTML para a lista de telefones.
+         */
+        function renderPhoneList(items) {
+            let listHtml = '';
+            items.forEach((item, index) => {
+                listHtml += generatePhoneListItem(item, detailTextColor, index);
+            });
+
+            resultsContainer.innerHTML = `
+                <p class="text-sm text-gray-600 mb-2 font-medium">Exibindo ${items.length} contatos:</p>
+                <div class="border border-gray-200 rounded-xl shadow-md overflow-hidden bg-white divide-y divide-gray-200">
+                    ${listHtml}
+                </div>
+            `;
+            addPhoneActionListeners();
+        }
+
+        /**
+         * 5. Gera o HTML para um item da lista (Visualização e Edição).
+         */
+        function generatePhoneListItem(item, detailTextColor, index) {
+            const itemIndex = index !== undefined ? index + 1 : '';
+
+            return `
+                <li id="item-${item.data_id}" class="phone-list-item p-4 transition duration-150 ease-in-out hover:bg-gray-50 data-id-${item.data_id}" data-id="${item.data_id}">
+                    <div class="font-semibold text-gray-800 mb-2">
+                        ${itemIndex ? `${itemIndex}. ` : ''} ${item.setor} 
+                    </div>
+
+                    <div class="view-mode space-y-1 text-sm">
+                        <div class="flex flex-wrap gap-x-4">
+                            <span class="${detailTextColor} font-medium">Telefone(s):</span>
+                            <span data-field="telefone" class="text-blue-600">${item.telefone || 'N/A'}</span>
+                        </div>
+                        <button class="edit-btn mt-3 text-xs bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-1 px-3 rounded transition duration-200">
+                            <i class="fas fa-edit"></i> Editar Telefone
+                        </button>
+                    </div>
+                    
+                    <div class="edit-mode space-y-2 text-sm hidden">
+                        <div class="flex flex-col">
+                            <label class="${detailTextColor} font-medium mb-1">Telefone(s) do Setor ${item.setor}:</label>
+                            <input type="text" data-field="telefone" value="${item.telefone || ''}" class="editable-input">
+                            <p class="text-xs text-gray-500 mt-1">Ex: 3106.4193, 3106.4194</p>
+                        </div>
+                        <div class="mt-4 space-x-2">
+                            <button class="save-btn text-xs bg-green-500 hover:bg-green-600 text-white font-medium py-1 px-3 rounded transition duration-200">
+                                <i class="fas fa-save"></i> Salvar
+                            </button>
+                            <button class="cancel-btn text-xs bg-gray-400 hover:bg-gray-500 text-white font-medium py-1 px-3 rounded transition duration-200">
+                                <i class="fas fa-times"></i> Cancelar
+                            </button>
+                        </div>
+                    </div>
+                </li>
+            `;
+        }
+
+        /**
+         * 6. Adiciona listeners para os botões de Edição/Salvar/Cancelar.
+         */
+        function addPhoneActionListeners() {
+            document.querySelectorAll('.phone-list-item').forEach(listItem => {
+                const dataId = listItem.getAttribute('data-id');
+                const item = dataArray.find(e => e.data_id === dataId);
+
+                if (!item) return;
+
+                // Botão de Edição
+                listItem.querySelector('.edit-btn')?.addEventListener('click', () => {
+                    enterEditMode(listItem, item);
+                });
+
+                // Botão de Salvar
+                listItem.querySelector('.save-btn')?.addEventListener('click', () => {
+                    saveChanges(listItem, item);
+                });
+
+                // Botão de Cancelar
+                listItem.querySelector('.cancel-btn')?.addEventListener('click', () => {
+                    exitEditMode(listItem);
+                });
+            });
+        }
+
+        /**
+         * 7. Entra no modo de edição.
+         */
+        function enterEditMode(listItem, item) {
+            listItem.querySelector('.view-mode').classList.add('hidden');
+            listItem.querySelector('.edit-mode').classList.remove('hidden');
+            
+            // Re-popula o input com o valor atual
+            const input = listItem.querySelector('.edit-mode input[data-field="telefone"]');
+            if (input) {
+                input.value = item.telefone || '';
+                input.focus();
+            }
+        }
+
+        /**
+         * 8. Sai do modo de edição.
+         */
+        function exitEditMode(listItem) {
+            listItem.querySelector('.edit-mode').classList.add('hidden');
+            listItem.querySelector('.view-mode').classList.remove('hidden');
+        }
+
+        /**
+         * 9. Salva as alterações feitas no modo de edição.
+         */
+        function saveChanges(listItem, item) {
+            const input = listItem.querySelector('.edit-mode input[data-field="telefone"]');
+            const newValue = input.value.trim();
+            let updated = false;
+
+            if (item.telefone !== newValue) {
+                item.telefone = newValue;
+                updated = true;
+            }
+
+            if (updated) {
+                saveData();
+                // Re-renderiza a lista para refletir as alterações no modo de visualização
+                searchAndRender(); 
+
+                alert(`Telefone do setor "${item.setor}" atualizado e salvo no seu navegador.`);
+            } else {
+                alert('Nenhuma alteração detectada.');
+                exitEditMode(listItem); 
+            }
+        }
+
+        /**
+         * 10. Funções para Exportar em CSV
+         */
+        function convertToCSV(objArray) {
+            const array = typeof objArray !== 'object' ? JSON.parse(objArray) : objArray;
+            let str = '';
+
+            // Cabeçalho (chaves do primeiro objeto)
+            let header = Object.keys(array[0] || {}).join(';');
+            str += header + '\r\n';
+
+            // Dados
+            array.forEach(obj => {
+                let row = Object.values(obj).map(value => {
+                    if (value === null || value === undefined) return '';
+                    let val = String(value).replace(/"/g, '""'); 
+                    if (val.includes(';') || val.includes('\n')) {
+                        return `"${val}"`;
+                    }
+                    return val;
+                }).join(';');
+                str += row + '\r\n';
+            });
+
+            // Ajuste para garantir que o CSV seja formatado corretamente
+            let csvString = "data:text/csv;charset=utf-8,\uFEFF" + header.split(';').join(';') + '\n';
+
+            array.forEach(obj => {
+                let row = Object.values(obj).map(value => {
+                    if (value === null || value === undefined) return '';
+                    let val = String(value).replace(/"/g, '""');
+                    if (val.includes(';')) {
+                        return `"${val}"`;
+                    }
+                    return val;
+                }).join(';');
+                csvString += row + '\n';
+            });
+
+            return csvString;
+        }
+
+        function exportToCSV() {
+            // Pega os dados limpos (sem a chave interna data_id)
+            const exportData = dataArray.map(e => {
+                const { data_id, ...rest } = e;
+                return rest;
+            });
+
+            if(exportData.length === 0) {
+                 alert('Não há dados para exportar.');
+                 return;
+            }
+
+            const csvContent = convertToCSV(exportData);
+            
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'telefones_uteis_seduc.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            alert('Arquivo CSV com a lista completa de telefones gerado com sucesso!');
+        }
+
+        // =========================================================================================
+        // === LISTENERS E INICIALIZAÇÃO ===========================================================
+        // =========================================================================================
+        
+        searchInput.addEventListener('input', searchAndRender);
+        exportAgendaBtn.addEventListener('click', exportToCSV);
+        
+        loadData();
+    </script>
+</body>
+</html>

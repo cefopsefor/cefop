@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEFOP - Gerador de E-mails Oficiais</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fb;
+        }
+        /* Definições de cor para Orange-600 (Laranja) */
+        .text-orange-600 { color: #ea580c; }
+        .bg-orange-600 { background-color: #ea580c; }
+        .hover\:bg-orange-700:hover { background-color: #c2410c; }
+        .border-orange-500 { border-color: #f97316; }
+        .focus\:ring-orange-500:focus { --tw-ring-color: #f97316; }
+        .border-orange-200 { border-color: #fed7aa; }
+        .bg-orange-50 { background-color: #fff7ed; }
+        .text-orange-800 { color: #9a3412; }
+
+
+        /* Estilo para pré-visualização de arquivos */
+        #file-preview-box {
+            display: none;
+            transition: all 0.3s ease;
+        }
+        #file-preview-box.active {
+            display: flex;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-start justify-center p-4 sm:p-8">
+
+    <div class="w-full max-w-4xl">
+        
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-orange-600 leading-none tracking-tight flex items-center justify-center">
+                <i class="fas fa-file-alt mr-3"></i> Gerador de MENSAGEM E-MAIL
+            </h1>
+            <p class="text-lg text-gray-500 mt-2">
+                Repasse as informações gerais para a elaboração do texto base do e-mail.
+            </p>
+        </header>
+
+        <main class="bg-white p-6 sm:p-10 rounded-2xl shadow-xl border border-orange-100">
+
+            <div id="input-form">
+                <div class="mb-6">
+                    <label for="brief-input" class="block text-sm font-bold text-gray-700 mb-2">1. Resumo do Conteúdo (Texto Principal)</label>
+                    <textarea id="brief-input" rows="8" placeholder="Cole aqui o texto, a informação, ou o comunicado que você deseja transformar em um E-mail oficial. A IA irá padronizar a linguagem e a formatação." class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none transition duration-150"></textarea>
+                    <p class="mt-2 text-xs text-gray-500">Obrigatório. Se não houver arquivo anexo, este campo será usado para gerar a mensagem. Se houver, a IA usará ambos.</p>
+                </div>
+
+                <div class="mb-8 p-4 border-2 border-dashed border-gray-200 rounded-xl hover:border-orange-400 transition duration-150">
+                    <label for="file-input" class="flex items-center justify-between cursor-pointer">
+                        <span class="text-sm font-bold text-gray-700">2. Anexar Documento para Análise (Opcional)</span>
+                        <span class="text-sm text-orange-600 font-semibold flex items-center">
+                            <i class="fas fa-upload mr-2"></i> Clique para Anexar
+                        </span>
+                    </label>
+                    <input type="file" id="file-input" class="hidden" accept=".pdf, .png, .jpg, .jpeg">
+                    <p class="mt-2 text-xs text-gray-500">Formatos aceitos: PDF e Imagens (PNG, JPG). Tamanho máximo: 4MB.</p>
+
+                    <div id="file-preview-box" class="mt-4 p-3 bg-gray-50 rounded-lg items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-paperclip text-orange-500"></i>
+                            <span id="file-name" class="text-sm font-medium text-gray-700 truncate max-w-xs"></span>
+                        </div>
+                        <button onclick="clearFile()" class="text-xs text-red-500 hover:text-red-700 font-bold">
+                            <i class="fas fa-times-circle mr-1"></i> Remover
+                        </button>
+                    </div>
+                </div>
+
+                <button onclick="generateMessage()" id="generate-button" class="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-4 rounded-xl transition duration-200 text-lg flex items-center justify-center">
+                    <i class="fas fa-magic mr-3"></i> Gerar E-mail Padrão
+                </button>
+            </div>
+
+            <div id="result-area" class="hidden mt-8">
+                <h2 class="text-2xl font-bold text-orange-600 mb-4 border-b pb-2 flex items-center">
+                    <i class="fas fa-check-circle mr-2"></i> E-mail Gerado
+                </h2>
+                
+                <div class="mb-6 p-4 bg-orange-50 border border-orange-200 rounded-lg">
+                    <p class="text-sm font-bold text-orange-800 mb-1">Assunto:</p>
+                    <p id="subject-output" class="text-lg font-semibold text-gray-800 whitespace-pre-wrap"></p>
+                </div>
+
+                <p class="text-sm font-bold text-gray-700 mb-1">Corpo da Mensagem:</p>
+                <div class="relative bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <textarea id="message-output" rows="15" readonly class="w-full bg-gray-50 text-gray-800 whitespace-pre-wrap outline-none resize-none"></textarea>
+                    <button onclick="copyMessage()" id="copy-button" class="absolute top-2 right-2 bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-bold py-1 px-3 rounded-lg transition duration-200">
+                        <i class="fas fa-copy mr-1"></i> Copiar
+                    </button>
+                </div>
+
+                <div class="mt-6 flex justify-end">
+                    <button onclick="resetForm()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg transition duration-200 flex items-center">
+                        <i class="fas fa-redo mr-2"></i> Nova Geração
+                    </button>
+                </div>
+            </div>
+
+            <div id="loader-area" class="hidden text-center mt-10">
+                <i class="fas fa-spinner fa-spin text-4xl text-orange-600 mb-3"></i>
+                <p class="text-gray-600 font-semibold">Analisando conteúdo e gerando e-mail formal...</p>
+                <p class="text-xs text-gray-400 mt-1">Isso pode levar alguns segundos, especialmente com anexos maiores.</p>
+            </div>
+
+             <div id="error-area" class="hidden text-center mt-8 p-6 bg-red-100 border border-red-400 rounded-lg">
+                <i class="fas fa-exclamation-triangle text-3xl text-red-600 mb-3"></i>
+                <h3 class="text-xl font-bold text-red-700 mb-2">Erro na Geração</h3>
+                <p id="error-message" class="text-red-600"></p>
+            </div>
+        </main>
+
+        <footer class="text-center mt-12 pb-4 text-xs text-gray-400">
+            Ferramenta desenvolvida pela CEFOP.
+        </footer>
+
+    </div>
+    
+    <a href="index.html" class="fixed bottom-8 right-8 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg transition duration-200 flex items-center z-50" title="Voltar ao Painel Principal">
+        <i class="fas fa-home mr-2"></i> Voltar ao Painel
+    </a>
+
+    <script>
+        // O endpoint da API mudou
+        const API_URL = '/api/generate_email';
+        const MAX_FILE_SIZE_MB = 4;
+        let selectedFile = null;
+
+        // =========================================================================
+        // --- FUNÇÕES DE CONTROLE DE UI ---
+        // =========================================================================
+
+        function setUIState(state) {
+            document.getElementById('input-form').classList.add('hidden');
+            document.getElementById('result-area').classList.add('hidden');
+            document.getElementById('loader-area').classList.add('hidden');
+            document.getElementById('error-area').classList.add('hidden');
+            document.getElementById('generate-button').disabled = false;
+
+            switch (state) {
+                case 'input':
+                    document.getElementById('input-form').classList.remove('hidden');
+                    break;
+                case 'loading':
+                    document.getElementById('loader-area').classList.remove('hidden');
+                    document.getElementById('generate-button').disabled = true;
+                    break;
+                case 'result':
+                    document.getElementById('result-area').classList.remove('hidden');
+                    break;
+                case 'error':
+                    document.getElementById('error-area').classList.remove('hidden');
+                    break;
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('brief-input').value = '';
+            document.getElementById('file-input').value = '';
+            clearFile();
+            setUIState('input');
+        }
+
+        // =========================================================================
+        // --- FUNÇÕES DE UPLOAD DE ARQUIVO ---
+        // =========================================================================
+
+        document.getElementById('file-input').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const fileSizeMB = file.size / (1024 * 1024);
+                const allowedTypes = ['application/pdf', 'image/png', 'image/jpeg', 'image/jpg'];
+
+                if (!allowedTypes.includes(file.type)) {
+                    alert('Formato de arquivo não suportado. Use PDF, PNG ou JPG.');
+                    clearFile();
+                    return;
+                }
+
+                if (fileSizeMB > MAX_FILE_SIZE_MB) {
+                    alert(`O arquivo excede o limite de ${MAX_FILE_SIZE_MB}MB.`);
+                    clearFile();
+                    return;
+                }
+
+                // Arquivo válido, salva e exibe preview
+                selectedFile = file;
+                document.getElementById('file-name').textContent = file.name;
+                document.getElementById('file-preview-box').classList.add('active');
+            } else {
+                clearFile();
+            }
+        });
+
+        function clearFile() {
+            document.getElementById('file-input').value = '';
+            document.getElementById('file-preview-box').classList.remove('active');
+            selectedFile = null;
+        }
+
+        // =========================================================================
+        // --- FUNÇÃO DE GERAÇÃO E COMUNICAÇÃO COM API ---
+        // =========================================================================
+
+        async function generateMessage() {
+            const brief = document.getElementById('brief-input').value.trim();
+            const hasFile = !!selectedFile;
+
+            if (!brief && !hasFile) {
+                alert('É necessário fornecer o Resumo de Texto ou anexar um Arquivo.');
+                return;
+            }
+
+            setUIState('loading');
+            let base64File = null;
+
+            // 1. Converte o arquivo para Base64 se houver
+            if (hasFile) {
+                try {
+                    base64File = await fileToBase64(selectedFile);
+                } catch (e) {
+                    document.getElementById('error-message').textContent = `Falha ao ler o arquivo: ${e.message}`;
+                    setUIState('error');
+                    return;
+                }
+            }
+
+            // 2. Monta o payload
+            const payload = {
+                brief: brief,
+                base64File: base64File ? base64File.split(',')[1] : null, // Remove o prefixo 'data:mime/type;base64,'
+                mimeType: selectedFile ? selectedFile.type : null
+            };
+
+            // 3. Chama a API
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Erro desconhecido na API.');
+                }
+
+                displayResult(data.message);
+
+            } catch (error) {
+                console.error('Erro na requisição:', error);
+                document.getElementById('error-message').textContent = error.message || 'Um erro inesperado ocorreu ao tentar conectar com o servidor.';
+                setUIState('error');
+            }
+        }
+
+        // =========================================================================
+        // --- FUNÇÕES DE EXIBIÇÃO DE RESULTADO E UTILS ---
+        // =========================================================================
+
+        function displayResult(message) {
+            // A mensagem gerada tem 4 partes: 1. ASSUNTO, 2. SAUDAÇÃO, 3. CORPO, 4. ENCERRAMENTO
+            // A 1ª linha é o ASSUNTO. A 2ª linha é o espaço. Pula a 1ª e a 2ª linha para o corpo.
+            const lines = message.split('\n');
+            const subject = lines[0].trim();
+            // Pula a primeira linha (ASSUNTO) e junta o resto para o corpo da mensagem, mantendo as quebras de linha.
+            const body = lines.slice(2).join('\n').trim(); 
+
+            document.getElementById('subject-output').textContent = subject;
+            document.getElementById('message-output').value = body;
+
+            setUIState('result');
+        }
+
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        function copyMessage() {
+            const messageOutput = document.getElementById('message-output');
+            messageOutput.select();
+            messageOutput.setSelectionRange(0, 99999); 
+            document.execCommand('copy');
+            
+            const button = document.getElementById('copy-button');
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-check mr-1"></i> Copiado!';
+            button.classList.add('bg-green-500', 'hover:bg-green-600', 'text-white');
+            button.classList.remove('bg-gray-200', 'hover:bg-gray-300', 'text-gray-700');
+
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.classList.remove('bg-green-500', 'hover:bg-green-600', 'text-white');
+                button.classList.add('bg-gray-200', 'hover:bg-gray-300', 'text-gray-700');
+            }, 2000);
+        }
+
+        // Inicializa o formulário no estado de input
+        document.addEventListener('DOMContentLoaded', () => {
+            setUIState('input');
+        });
+
+    </script>
+</body>
+
+</html>

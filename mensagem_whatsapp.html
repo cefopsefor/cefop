@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEFOP - Gerador de Mensagens WhatsApp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        /* Define a fonte Inter e um fundo suave */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fb;
+        }
+        /* Estilo para animação de notificação customizada (Toast) */
+        .toast-enter {
+            animation: slideIn 0.3s forwards;
+        }
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center p-4 sm:p-8">
+
+    <div class="w-full max-w-4xl bg-white shadow-2xl rounded-xl p-8 sm:p-12 mt-4 flex-grow">
+        
+        <h1 class="text-3xl font-bold text-gray-800 mb-2 flex items-center">
+            <i class="fab fa-whatsapp text-purple-600 mr-3"></i> Gerador de Mensagens WhatsApp
+        </h1>
+        <p class="text-gray-500 mb-8">Crie mensagens padronizadas e use a IA para gerar textos formais baseados em um resumo ou arquivo.</p>
+
+        <div class="space-y-6 mb-8 p-6 bg-gray-50 rounded-lg border border-gray-200">
+            
+            <div>
+                <label for="userBrief" class="block text-sm font-medium text-gray-700 mb-2">Resumo da Mensagem ou Texto Manual (Opcional):</label>
+                <textarea id="userBrief" rows="5" placeholder="Escreva as informações necessárias para a criação da base da mensagem" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500 text-gray-700"></textarea>
+            </div>
+            
+            <div>
+                <label for="fileInput" class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+                    <i class="fas fa-upload mr-2 text-blue-500"></i> Selecionar Arquivo:
+                </label>
+                <input type="file" id="fileInput" class="w-full text-sm text-gray-700
+                    file:mr-4 file:py-2 file:px-4
+                    file:rounded-full file:border-0
+                    file:text-sm file:font-semibold
+                    file:bg-blue-50 file:text-blue-700
+                    hover:file:bg-blue-100 cursor-pointer
+                ">
+                <p class="text-xs text-gray-500 mt-1">Envie um arquivo de texto (TXT) ou PDF/DOCX (para que a IA tente extrair o conteúdo).</p>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 pt-4 border-t border-gray-200">
+                <button onclick="geraMensagemIA()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200 shadow-md">
+                    <i class="fas fa-magic mr-2"></i> Gerar Mensagem
+                </button>
+            </div>
+
+        </div>
+
+        <div id="generatedMessageContainer" class="mb-8 hidden"> 
+            <h2 class="text-xl font-bold text-gray-800 mb-3 border-l-4 border-purple-500 pl-3">Mensagem Gerada</h2>
+            <textarea id="generatedMessage" rows="8" readonly placeholder="A mensagem gerada aparecerá aqui." class="w-full p-4 border border-gray-300 bg-gray-100 rounded-lg text-gray-700 resize-none"></textarea>
+        </div>
+
+        <button id="sendWhatsappBtn" onclick="copiarTexto()" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-lg text-lg transition duration-200 shadow-xl" disabled>
+            <i class="fas fa-copy mr-2"></i> Copiar para colar
+        </button>
+        
+        <p class="text-center text-sm text-red-500 mt-2 font-semibold">NÃO ESQUEÇA DE REVISAR!</p>
+
+
+    </div>
+    
+    <div class="w-full max-w-4xl mt-6 flex justify-end">
+        <a href="index.html" class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200 flex items-center" title="Voltar à Página Inicial">
+            <i class="fas fa-home mr-2"></i> Voltar à Página Inicial
+        </a>
+    </div>
+
+    <div id="custom-toast" class="fixed top-0 right-0 m-6 p-4 bg-purple-600 text-white rounded-lg shadow-xl hidden z-50 transition transform duration-300">
+        <p id="toast-message" class="font-semibold"></p>
+    </div>
+
+    <script>
+        const userBriefInput = document.getElementById('userBrief');
+        const fileInput = document.getElementById('fileInput');
+        const generatedMessageArea = document.getElementById('generatedMessage');
+        const sendWhatsappBtn = document.getElementById('sendWhatsappBtn');
+        // NOVA VARIÁVEL
+        const generatedMessageContainer = document.getElementById('generatedMessageContainer'); 
+        
+        function checkInputs() {
+            const hasMessage = generatedMessageArea.value.trim() !== '';
+            sendWhatsappBtn.disabled = !hasMessage;
+        }
+
+        generatedMessageArea.addEventListener('input', checkInputs); 
+        
+        // FUNÇÃO RENOMEADA E MODIFICADA PARA APENAS COPIAR
+        async function copiarTexto() {
+            const mensagemBruta = generatedMessageArea.value.trim();
+            
+            if (!mensagemBruta) {
+                showToast("Gere a mensagem antes de tentar copiar.");
+                return;
+            }
+
+            try {
+                // Copia o texto para a área de transferência
+                await navigator.clipboard.writeText(mensagemBruta);
+                // MENSAGEM DO TOAST ALTERADA
+                showToast("Mensagem copiada para a área de transferência!");
+                
+                // LINHA DE ABRIR O WHATSAPP WEB FOI REMOVIDA
+                
+            } catch (err) {
+                console.error('Erro ao copiar:', err);
+                showToast("Erro ao copiar. Seu navegador não permite a cópia automática.");
+            }
+        }
+
+        async function geraMensagemIA() {
+            const brief = userBriefInput.value.trim();
+            const file = fileInput.files[0];
+            let base64File = null;
+            let mimeType = null;
+            let fileName = file ? file.name : '';
+
+            // 1. TORNA O CONTÊINER DA MENSAGEM VISÍVEL
+            generatedMessageContainer.classList.remove('hidden'); 
+            
+            // Validação que exige texto OU arquivo
+            if (!brief && !file) {
+                const errorMessage = "ERRO: Preciso das informações para a geração da mensagem.";
+                generatedMessageArea.value = errorMessage;
+                checkInputs();
+                showToast(errorMessage);
+                return;
+            }
+            
+            generatedMessageArea.value = '';
+            showToast("Analisando e gerando mensagem com IA...");
+
+            // Lógica para ler o arquivo como Base64 (para ser enviado à IA)
+            if (file) {
+                try {
+                    base64File = await new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onloadend = () => {
+                            // Extrai apenas a string Base64 (após "base64,")
+                            resolve(reader.result.split(',')[1]);
+                        };
+                        reader.onerror = reject;
+                        reader.readAsDataURL(file);
+                    });
+                    mimeType = file.type;
+                } catch (error) {
+                    console.error('Erro ao ler o arquivo:', error);
+                    showToast("Erro ao ler o arquivo. Tente novamente.");
+                    return;
+                }
+            }
+            
+            let apiEndpoint = '/api/generate_message';
+            
+            if (!window.location.hostname.includes('vercel.app') && window.location.hostname !== 'localhost') {
+                const VERCEL_DOMAIN = 'cefopsefor.vercel.app'; 
+                apiEndpoint = `https://${VERCEL_DOMAIN}/api/generate_message`;
+                showToast(`Aviso: Tentando URL completa: ${apiEndpoint}`);
+            }
+
+            try {
+                const response = await fetch(apiEndpoint, { 
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        brief: brief,
+                        base64File: base64File,
+                        mimeType: mimeType
+                    }) 
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    let errorMessage = `Erro HTTP ${response.status}.`;
+                    try {
+                        const errorData = JSON.parse(errorText);
+                        errorMessage = errorData.error || errorMessage;
+                    } catch (e) {
+                        errorMessage += ` Resposta: ${errorText.substring(0, 100)}...`;
+                    }
+                    throw new Error(errorMessage);
+                }
+
+                const data = await response.json();
+                let mensagemFinal = data.message;
+            
+                if (fileName) {
+                    mensagemFinal += `\n\n---\n(Lembrete: Favor anexar o arquivo: **${fileName}**)`;
+                }
+
+                generatedMessageArea.value = mensagemFinal;
+                checkInputs();
+                showToast("Mensagem de IA gerada com sucesso!");
+
+            } catch (error) {
+                console.error('Erro na chamada da API de IA:', error);
+                generatedMessageArea.value = `ERRO: Não foi possível gerar a mensagem via IA. Por favor, coloque o texto diretamente no campo de resumo e tente gerar novamente. Detalhes: ${error.message}`;
+                showToast("Falha na geração com IA. Verifique o console.");
+                checkInputs();
+            }
+        }
+        
+        function showToast(message) {
+            const toast = document.getElementById('custom-toast');
+            const toastMessage = document.getElementById('toast-message');
+
+            toast.classList.add('hidden');
+            toast.classList.remove('toast-enter'); 
+            
+            toastMessage.textContent = message;
+
+            setTimeout(() => {
+                toast.classList.remove('hidden');
+                toast.classList.add('toast-enter'); 
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.remove('toast-enter');
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            userBriefInput.focus();
+            checkInputs();
+        });
+    </script>
+</body>
+</html>

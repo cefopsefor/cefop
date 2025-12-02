@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEFOP - Localização das Escolas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fb;
+        }
+        /* Definições de cor para Azul/Roxo (Padrão de Visualização) */
+        .text-indigo-600 { color: #4f46e5; }
+        .bg-indigo-600 { background-color: #4f46e5; }
+        .hover\:bg-indigo-700:hover { background-color: #4338ca; }
+        .border-indigo-500 { border-color: #6366f1; }
+        
+        /* Estilos para o Acordeão (conteúdo oculto por padrão) */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out;
+            padding: 0 1rem; /* Padding horizontal mantido */
+        }
+        .accordion-content.active {
+            max-height: 5000px; /* Valor alto o suficiente para acomodar o conteúdo */
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+        .rotate-180 {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-start justify-center p-4 sm:p-8">
+
+    <div class="w-full max-w-5xl">
+        
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-indigo-600 leading-none tracking-tight flex items-center justify-center">
+                <i class="fas fa-map-marker-alt mr-3"></i> Localização das Escolas por SEFOR
+            </h1>
+            <p class="text-lg text-gray-500 mt-2">
+                Consulta rápida de nomes e endereços para logística e comunicados.
+            </p>
+        </header>
+
+        <main class="bg-white p-6 sm:p-10 rounded-2xl shadow-xl border border-indigo-100">
+
+            <div id="sefor-1" class="mb-6 border border-gray-200 rounded-xl">
+                <button class="accordion-header flex justify-between items-center w-full p-5 font-bold text-lg text-white bg-indigo-600 rounded-t-xl hover:bg-indigo-700 transition" onclick="toggleAccordion('content-sefor-1')">
+                    <span class="flex items-center"><i class="fas fa-school mr-3"></i> SEFOR 1 - (56 Escolas)</span>
+                    <i class="fas fa-chevron-down transform transition-transform duration-300"></i>
+                </button>
+                
+                <div id="content-sefor-1" class="accordion-content">
+                    
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead>
+                                <tr class="bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th class="px-4 py-3">Nome da Escola</th>
+                                    <th class="px-4 py-3">Endereço</th>
+                                    <th class="px-4 py-3">Bairro</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200 text-sm">
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">CEJA – ADELINO ALCÂNTARA FILHO</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua 612, S/N - Etapa I</td>
+                                    <td class="px-4 py-3 text-gray-600">Conjunto Ceará I</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">CEJA – JOSÉ WALTER</td>
+                                    <td class="px-4 py-3 text-gray-600">Avenida L, S/N - 2ª Etapa</td>
+                                    <td class="px-4 py-3 text-gray-600">Conjunto José Walter</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">CEJA – MILTON CUNHA</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Padre Pedro de Alencar, 328</td>
+                                    <td class="px-4 py-3 text-gray-600">Messejana</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">CEJA – MONS. HÉLIO CAMPOS</td>
+                                    <td class="px-4 py-3 text-gray-600">Avenida Monsenhor Hélio Campos, 251</td>
+                                    <td class="px-4 py-3 text-gray-600">Cristo Redentor</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">CEJA – MOREIRA CAMPOS</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Júlio Braga, 101 - B</td>
+                                    <td class="px-4 py-3 text-gray-600">Parangaba</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">CEJA – PAULO FREIRE</td>
+                                    <td class="px-4 py-3 text-gray-600">Avenida Olavo Bilac, 1300</td>
+                                    <td class="px-4 py-3 text-gray-600">São Gerardo</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">CEJA – PROF. EUDES VERAS</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Demétrio de Menezes, 130</td>
+                                    <td class="px-4 py-3 text-gray-600">Antônio Bezerra</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">CEJA – PROF. GILMAR MAIA DE SOUZA</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Guilherme Rocha, 1055</td>
+                                    <td class="px-4 py-3 text-gray-600">Centro</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">CEJA – PROF. JOSÉ NEUDSON BRAGA</td>
+                                    <td class="px-4 py-3 text-gray-600">Avenida Carapinima, 2137</td>
+                                    <td class="px-4 py-3 text-gray-600">Benfica</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">CAIC RAIMUNDO GOMES DE CARVALHO</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Prof. Edgard de Arruda, 1683</td>
+                                    <td class="px-4 py-3 text-gray-600">Dom Lustosa</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">CENTRO EDUCACIONAL MOEMA TÁVORA</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Marcílio Dias, 485</td>
+                                    <td class="px-4 py-3 text-gray-600">Pirambu</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">COLÉGIO DA POLÍCIA MILITAR DO CEARÁ GENERAL</td>
+                                    <td class="px-4 py-3 text-gray-600">Av. Mister Hull, 3835</td>
+                                    <td class="px-4 py-3 text-gray-600">Antônio Bezerra</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">COLÉGIO MILITAR DO CORPO DE BOMBEIROS</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Adriano Martins, 436</td>
+                                    <td class="px-4 py-3 text-gray-600">Jacarecanga</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEEP DONA CREUSA DO CARMO ROCHA</td>
+                                    <td class="px-4 py-3 text-gray-600">Av. Sgt. Hermínio Sampaio, 2006</td>
+                                    <td class="px-4 py-3 text-gray-600">Monte Castelo</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEEP JOAQUIM NOGUEIRA</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Moreira de Sousa, 327</td>
+                                    <td class="px-4 py-3 text-gray-600">Parquelândia</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEEP JÚLIA GIFFONI</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Cel. Matos Dourado, 1349</td>
+                                    <td class="px-4 py-3 text-gray-600">Pici</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEEP MARWIN</td>
+                                    <td class="px-4 py-3 text-gray-600">SESI da Barra - Av. Francisco Sá, 6623</td>
+                                    <td class="px-4 py-3 text-gray-600">Barra do Ceará</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEEP PAULO PETROLA</td>
+                                    <td class="px-4 py-3 text-gray-600">Tv. Castelo, s/n</td>
+                                    <td class="px-4 py-3 text-gray-600">Barra do Ceará</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEEP PRESIDENTE ROOSEVELT</td>
+                                    <td class="px-4 py-3 text-gray-600">Av. Bezerra de Menezes, 435</td>
+                                    <td class="px-4 py-3 text-gray-600">Farias Brito</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEF JESUS MARIA JOSÉ</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Mangueira, 134</td>
+                                    <td class="px-4 py-3 text-gray-600">Quintino Cunha</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM CENTRO EDUCACIONAL DOM HÉLIO CAMPOS</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua São Raimundo, 199</td>
+                                    <td class="px-4 py-3 text-gray-600">Pirambu</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM DOM HÉLDER CÂMARA</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Rosinha Sampaio, 1157</td>
+                                    <td class="px-4 py-3 text-gray-600">Quintino Cunha</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM FÉLIX DE AZEVEDO</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Monsenhor Furtado, 757</td>
+                                    <td class="px-4 py-3 text-gray-600">Rodolfo Teófilo</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM FERNANDO CAVALCANTE MOTA</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua da Salema, 85</td>
+                                    <td class="px-4 py-3 text-gray-600">Barra do Ceará</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM GOVERNADOR FLÁVIO MARCÍLIO</td>
+                                    <td class="px-4 py-3 text-gray-600">Av. Pasteur, 575</td>
+                                    <td class="px-4 py-3 text-gray-600">Pirambu</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM HERÁCLITO DE CASTRO E SILVA</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Araripe Macêdo, 354</td>
+                                    <td class="px-4 py-3 text-gray-600">Jóquei Clube</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM JOÃO PAULO II</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Prof. Heribaldo Costa, 1125</td>
+                                    <td class="px-4 py-3 text-gray-600">Henrique Jorge</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM JOSÉ BEZERRA DE MENEZES</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Anário Braga, 200</td>
+                                    <td class="px-4 py-3 text-gray-600">Antônio Bezerra</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM JOSÉ WALDEMAR DE ALCÂNTARA E SILVA</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Maceió, 627</td>
+                                    <td class="px-4 py-3 text-gray-600">Henrique Jorge</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM MÁRIO HUGO CIDRACK DO VALE</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Dr. Periguari, 547</td>
+                                    <td class="px-4 py-3 text-gray-600">Antônio Bezerra</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM PATRONATO SAGRADA FAMÍLIA</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Martins Neto, 379</td>
+                                    <td class="px-4 py-3 text-gray-600">Antônio Bezerra</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEF SÃO JOSÉ DO PICI DAS PEDREIRAS</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Manoel Antônio Leite, 250</td>
+                                    <td class="px-4 py-3 text-gray-600">Bonsucesso</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEM DEPUTADO FRANCISCO DE ALMEIDA MONTE</td>
+                                    <td class="px-4 py-3 text-gray-600">Av. Cel. Carvalho, 2400</td>
+                                    <td class="px-4 py-3 text-gray-600">Barra do Ceará</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEM DOUTOR CESAR CALS</td>
+                                    <td class="px-4 py-3 text-gray-600">Av. Domingos Olímpio, 1800</td>
+                                    <td class="px-4 py-3 text-gray-600">Farias Brito</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEM MARIANO MARTINS</td>
+                                    <td class="px-4 py-3 text-gray-600">Av. Senador Fernandes Távora, 1445</td>
+                                    <td class="px-4 py-3 text-gray-600">Henrique Jorge</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI ANTONIETA SIQUEIRA</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Guarani, 4</td>
+                                    <td class="px-4 py-3 text-gray-600">Pici</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI ANTÔNIO BEZERRA</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Padre Perdigão Sampaio, 780</td>
+                                    <td class="px-4 py-3 text-gray-600">Antônio Bezerra</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI ANTÔNIO SALES</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Professor Anacleto, 630</td>
+                                    <td class="px-4 py-3 text-gray-600">Parquelândia</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI AYRTON SENNA DA SILVA</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Manaus, 855</td>
+                                    <td class="px-4 py-3 text-gray-600">Dom Lustosa</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI CLÁUDIO MARTINS</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Demócrito Rocha, 400</td>
+                                    <td class="px-4 py-3 text-gray-600">Monte Castelo</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI DONA HILZA DIOGO DE OLIVEIRA</td>
+                                    <td class="px-4 py-3 text-gray-600">Av. Dom Aloísio Lorscheider, 1040</td>
+                                    <td class="px-4 py-3 text-gray-600">Vila Velha</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI DONA MARIA MENEZES DE SERPA</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Dr. Quixadá Felício, 141</td>
+                                    <td class="px-4 py-3 text-gray-600">Vila Velha</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI ESTADO DE ALAGOAS</td>
+                                    <td class="px-4 py-3 text-gray-600">Av. Pres. Castelo Branco, 5244</td>
+                                    <td class="px-4 py-3 text-gray-600">Barra do Ceará</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI GENERAL EUDORO CORRÊA</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Júlio Braga, 101</td>
+                                    <td class="px-4 py-3 text-gray-600">Parangaba</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI HERMÍNIO BARROSO</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Padre Guilherme, 800</td>
+                                    <td class="px-4 py-3 text-gray-600">Padre Andrade</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI JOSÉ VALDO RIBEIRO RAMOS</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Pedro Américo, 100</td>
+                                    <td class="px-4 py-3 text-gray-600">Carlito Pamplona</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI LICEU VILA VELHA</td>
+                                    <td class="px-4 py-3 text-gray-600">Av. L, 840</td>
+                                    <td class="px-4 py-3 text-gray-600">Novo Assunçao</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI LIONS JANGADA</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Camélia, 352</td>
+                                    <td class="px-4 py-3 text-gray-600">Cristo Redentor</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI MARIA JOSÉ SANTOS FERREIRA GOMES</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Dona Lúcia Pinheiro, 93</td>
+                                    <td class="px-4 py-3 text-gray-600">Quintino Cunha</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI MONSENHOR DOURADO</td>
+                                    <td class="px-4 py-3 text-gray-600">Av. Sgt. Hermínio Sampaio, 4600</td>
+                                    <td class="px-4 py-3 text-gray-600">Padre Andrade</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI PROFESSORA BALBINA JUCÁ DE</td>
+                                    <td class="px-4 py-3 text-gray-600">Av. Major Assis, 346</td>
+                                    <td class="px-4 py-3 text-gray-600">Jardim Iracema</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI PROFESSOR PAULO FREIRE</td>
+                                    <td class="px-4 py-3 text-gray-600">Av. Senador Fernandes Távora, 1936</td>
+                                    <td class="px-4 py-3 text-gray-600">Henrique Jorge</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI SALES CAMPOS</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Jacinto Matos, 730</td>
+                                    <td class="px-4 py-3 text-gray-600">Jacarecanga</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI SANTO AFONSO</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua General Bernardo Figueiredo, 2670</td>
+                                    <td class="px-4 py-3 text-gray-600">Parquelândia</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI SÃO JOSÉ DOS ARPOADORES</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Francisco Calaça, 90</td>
+                                    <td class="px-4 py-3 text-gray-600">Cristo Redentor</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI WALDEMAR FALCÃO</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Dr. Hugo Rocha</td>
+                                    <td class="px-4 py-3 text-gray-600">Álvaro Weyne</td>
+                                </tr>
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="sefor-2" class="mb-6 border border-gray-200 rounded-xl">
+                <button class="accordion-header flex justify-between items-center w-full p-5 font-bold text-lg text-white bg-indigo-600 hover:bg-indigo-700 transition" onclick="toggleAccordion('content-sefor-2')">
+                    <span class="flex items-center"><i class="fas fa-school mr-3"></i> SEFOR 2 - (56 Escolas)</span>
+                    <i class="fas fa-chevron-down transform transition-transform duration-300"></i>
+                </button>
+                <div id="content-sefor-2" class="accordion-content">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead>
+                                <tr class="bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th class="px-4 py-3">Nome da Escola</th>
+                                    <th class="px-4 py-3">Endereço</th>
+                                    <th class="px-4 py-3">Bairro</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200 text-sm">
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">COLÉGIO ESTADUAL JUSTINIANO DE SERPA</td>
+                                    <td class="px-4 py-3 text-gray-600">Av. Santos Dumont, 56</td>
+                                    <td class="px-4 py-3 text-gray-600">Centro</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">COLÉGIO ESTADUAL LICEU DO CEARÁ - EEMTI</td>
+                                    <td class="px-4 py-3 text-gray-600">Praça Gustavo Barroso, 1</td>
+                                    <td class="px-4 py-3 text-gray-600">Centro</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEEP COMENDADOR MIGUEL GURGEL</td>
+                                    <td class="px-4 py-3 text-gray-600">R. José Baíma</td>
+                                    <td class="px-4 py-3 text-gray-600">Messejana</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEEP JAIME ALENCAR DE OLIVEIRA</td>
+                                    <td class="px-4 py-3 text-gray-600">Av. Rogaciano Leite, 2285</td>
+                                    <td class="px-4 py-3 text-gray-600">Luciano Cavalcante</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEEP JOAQUIM ANTÔNIO ALBANO</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Júlio Siqueira, 390</td>
+                                    <td class="px-4 py-3 text-gray-600">Dionísio Torres</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEEP JOSÉ DE BARCELOS</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Angélica Gurgel, 362</td>
+                                    <td class="px-4 py-3 text-gray-600">Messejana</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEEP MARIA ANGELA DA SILVEIRA BORGES</td>
+                                    <td class="px-4 py-3 text-gray-600">Av. César Cals, 1180</td>
+                                    <td class="px-4 py-3 text-gray-600">Vicente Pinzon</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEEP MARIA JOSÉ MEDEIROS</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Des. Lauro Nogueira, 1240</td>
+                                    <td class="px-4 py-3 text-gray-600">Papicu</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEEP MÁRIO ALENCAR</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Verde 44, 97</td>
+                                    <td class="px-4 py-3 text-gray-600">Jangurussu</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM ALMIRANTE TAMANDARÉ</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Mandacaru, 1048</td>
+                                    <td class="px-4 py-3 text-gray-600">Jangurussu</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM ANTONIO DIAS MACÊDO</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Pedro Dantas, 340</td>
+                                    <td class="px-4 py-3 text-gray-600">Dias Macedo</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM ARQUITETO ROGÉRIO FROES</td>
+                                    <td class="px-4 py-3 text-gray-600">Av. das Graviolas, 1000</td>
+                                    <td class="px-4 py-3 text-gray-600">Cidade 2000</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM BÁRBARA DE ALENCAR</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Pedro Rufino, 38</td>
+                                    <td class="px-4 py-3 text-gray-600">Varjota</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM CLÓVIS BEVILÁQUA</td>
+                                    <td class="px-4 py-3 text-gray-600">Av. Dom Manuel, 511</td>
+                                    <td class="px-4 py-3 text-gray-600">Centro</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM CONSTÂNCIA TÁVORA</td>
+                                    <td class="px-4 py-3 text-gray-600">R. A, 208</td>
+                                    <td class="px-4 py-3 text-gray-600">Cajazeiras</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM DEPUTADO MANOEL RODRIGUES</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Oliveira Filho, 1576</td>
+                                    <td class="px-4 py-3 text-gray-600">Vicente Pinzon</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM DONA LUÍZA TÁVORA - PIO XII</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Ana Gonçalves, 947</td>
+                                    <td class="px-4 py-3 text-gray-600">São João do Tauape</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM DOUTORA ALDACI BARBOSA</td>
+                                    <td class="px-4 py-3 text-gray-600">Av. Val Paraíso, 155</td>
+                                    <td class="px-4 py-3 text-gray-600">Jangurussu</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM GOVERNADOR VIRGÍLIO TÁVORA</td>
+                                    <td class="px-4 py-3 text-gray-600">RUA ALMEIDA REGO, SN</td>
+                                    <td class="px-4 py-3 text-gray-600">Parque Iracema</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM HELENITA MOTA</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Amancio Filomeno, 720</td>
+                                    <td class="px-4 py-3 text-gray-600">Cais do Porto</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM JOSÉ DE ALENCAR</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Veneza, 84</td>
+                                    <td class="px-4 py-3 text-gray-600">Messejana</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM NOEL HUGNEN DE OLIVEIRA PAIVA</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Monsenhor Salazar, 279</td>
+                                    <td class="px-4 py-3 text-gray-600">São João do Tauape</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM PADRE ROCHA</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Coronel Alves Teixeira, 525</td>
+                                    <td class="px-4 py-3 text-gray-600">Joaquim Távora</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM PARÓQUIA DA PAZ</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Visc. de Mauá, 905</td>
+                                    <td class="px-4 py-3 text-gray-600">Aldeota</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM POLIVALENTE MODELO DE FORTALEZA</td>
+                                    <td class="px-4 py-3 text-gray-600">Av. A, 482</td>
+                                    <td class="px-4 py-3 text-gray-600">Pref. José Walter</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM PROFESSOR ALOYSIO BARROS LEAL</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Dez, Nº 28</td>
+                                    <td class="px-4 py-3 text-gray-600">Barroso</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM PROFESSORA MARIA DA CONCEIÇÃO PORFÍRIO</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Monte Cristo, 177</td>
+                                    <td class="px-4 py-3 text-gray-600">Aerolândia</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM PROFESSORA MARIA GONÇALVES</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Monte Carmelo, 50</td>
+                                    <td class="px-4 py-3 text-gray-600">Castelão</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM PROFESSOR PAULO AYRTON DE ARAÚJO</td>
+                                    <td class="px-4 py-3 text-gray-600">BR-116, 800</td>
+                                    <td class="px-4 py-3 text-gray-600">Cajazeiras</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM SANTA LUZIA</td>
+                                    <td class="px-4 py-3 text-gray-600">R. João Cordeiro, 711</td>
+                                    <td class="px-4 py-3 text-gray-600">Meireles</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEM GENERAL MURILO BORGES MOREIRA</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua do Entardecer, 90</td>
+                                    <td class="px-4 py-3 text-gray-600">Vicente Pinzon</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEM LUÍZA TÁVORA - PROMORAR</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Frei Caneca, 379</td>
+                                    <td class="px-4 py-3 text-gray-600">Jardim Das Oliveiras</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEM PROFESSOR OTÁVIO TERCEIRO DE FARIAS</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Antônio Farias</td>
+                                    <td class="px-4 py-3 text-gray-600">Pref. José Walter</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI DEPUTADO PAULINO ROCHA</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Professor José Silveira, 528</td>
+                                    <td class="px-4 py-3 text-gray-600">Passaré</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI DEPUTADO PAULO BENEVIDES</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Angélica Gurgel, 186</td>
+                                    <td class="px-4 py-3 text-gray-600">Messejana</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI DOM ANTONIO DE ALMEIDA LUSTOSA</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Adolfo Moreira de Carvalho, 01</td>
+                                    <td class="px-4 py-3 text-gray-600">Edson Queiroz</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI DRAGÃO DO MAR</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Umari</td>
+                                    <td class="px-4 py-3 text-gray-600">Mucuripe</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI ESTADO DO PARÁ</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Djalma Petit, 589</td>
+                                    <td class="px-4 py-3 text-gray-600">Aerolândia</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI GOVERNADOR LUIZ GONZAGA DA FONSECA</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Santa Rosa, 407</td>
+                                    <td class="px-4 py-3 text-gray-600">Bairro Santa Rosa</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI INTEGRADA 2 DE MAIO</td>
+                                    <td class="px-4 py-3 text-gray-600">Av. da Saudade, S/n</td>
+                                    <td class="px-4 py-3 text-gray-600">Passaré</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI IRACEMA</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Egídio de Oliveira, 250</td>
+                                    <td class="px-4 py-3 text-gray-600">José de Alencar</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI JOÃO NOGUEIRA JUCÁ</td>
+                                    <td class="px-4 py-3 text-gray-600">R. José Felix de Lima, 313</td>
+                                    <td class="px-4 py-3 text-gray-600">Lagoa Sapiranga (Coité)</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI JOHNSON</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Gontran Giffoni, 461</td>
+                                    <td class="px-4 py-3 text-gray-600">Luciano Cavalcante</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI MATIAS BECK</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Professor Aída Balaio, 38</td>
+                                    <td class="px-4 py-3 text-gray-600">Vicente Pinzon</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI MIRIAN PORTO MOTA</td>
+                                    <td class="px-4 py-3 text-gray-600">R. do Guajiru, 100</td>
+                                    <td class="px-4 py-3 text-gray-600">Jardim Das Oliveiras</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI PADRE GUILHERME WAESSEN</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Boaventura, 916</td>
+                                    <td class="px-4 py-3 text-gray-600">Dias Macedo</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI PADRE MARCELINO CHAMPAGNAT</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Daura, 120</td>
+                                    <td class="px-4 py-3 text-gray-600">Barroso</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI POETA OTACÍLIO COLARES</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Jorge da Veiga, 265</td>
+                                    <td class="px-4 py-3 text-gray-600">Ancur</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI PROFESSORA TECLA FERREIRA</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Francisca Bezerra, 417</td>
+                                    <td class="px-4 py-3 text-gray-600">Lagoa Sapiranga (Coité)</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI PROFESSORA TELINA BARBOSA DA COSTA</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Dr. Pergentino Maia, 811</td>
+                                    <td class="px-4 py-3 text-gray-600">Messejana</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI RENATO BRAGA</td>
+                                    <td class="px-4 py-3 text-gray-600">Av. Rui Barbosa, 2000</td>
+                                    <td class="px-4 py-3 text-gray-600">Aldeota</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI VISCONDE DO RIO BRANCO</td>
+                                    <td class="px-4 py-3 text-gray-600">Av. Dom Manuel, 1803</td>
+                                    <td class="px-4 py-3 text-gray-600">Centro</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI WALTER DE SÁ CAVALCANTE</td>
+                                    <td class="px-4 py-3 text-gray-600">Av. Oliveira Paiva, 550</td>
+                                    <td class="px-4 py-3 text-gray-600">Cidade dos Funcionários</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">INSTITUTO CEARENSE DE EDUCAÇÃO DE SURDOS</td>
+                                    <td class="px-4 py-3 text-gray-600">Av. Rui Barbosa, 1970</td>
+                                    <td class="px-4 py-3 text-gray-600">Aldeota</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">LICEU DE MESSEJANA</td>
+                                    <td class="px-4 py-3 text-gray-600">Av. Washington Soares, 7702</td>
+                                    <td class="px-4 py-3 text-gray-600">Messejana</td>
+                                </tr>
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="sefor-3" class="mb-6 border border-gray-200 rounded-xl">
+                <button class="accordion-header flex justify-between items-center w-full p-5 font-bold text-lg text-white bg-indigo-600 rounded-b-xl hover:bg-indigo-700 transition" onclick="toggleAccordion('content-sefor-3')">
+                    <span class="flex items-center"><i class="fas fa-school mr-3"></i> SEFOR 3 - (56 Escolas)</span>
+                    <i class="fas fa-chevron-down transform transition-transform duration-300"></i>
+                </button>
+                <div id="content-sefor-3" class="accordion-content">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead>
+                                <tr class="bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th class="px-4 py-3">Nome da Escola</th>
+                                    <th class="px-4 py-3">Endereço</th>
+                                    <th class="px-4 py-3">Bairro</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200 text-sm">
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEEP DARCY RIBEIRO</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Cônego de Castro, 4801</td>
+                                    <td class="px-4 py-3 text-gray-600">Conj. Esperança</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEEP ÍCARO DE SOUSA MOREIRA</td>
+                                    <td class="px-4 py-3 text-gray-600">R. José Martins, 2268</td>
+                                    <td class="px-4 py-3 text-gray-600">Granja Lisboa</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEEP JOAQUIM MOREIRA DE SOUSA</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Caio Prado, 2</td>
+                                    <td class="px-4 py-3 text-gray-600">Parangaba</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEEP JUAREZ TÁVORA</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Ministro Joaquim Bastos, 747</td>
+                                    <td class="px-4 py-3 text-gray-600">Fátima</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEEP LEONEL DE MOURA BRIZOLA</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Holanda, 1281</td>
+                                    <td class="px-4 py-3 text-gray-600">Jardim Cearense</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEEP PAULO VI</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Jorge Dumar, 1841</td>
+                                    <td class="px-4 py-3 text-gray-600">Jardim América</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEEP PROFESSOR CÉSAR CAMPELO</td>
+                                    <td class="px-4 py-3 text-gray-600">R. 717, 164</td>
+                                    <td class="px-4 py-3 text-gray-600">Conj. Ceará II</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEEP PROFESSOR ONÉLIO PORTO</td>
+                                    <td class="px-4 py-3 text-gray-600">Av. E, 471</td>
+                                    <td class="px-4 py-3 text-gray-600">Pref. José Walter</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM ANÍSIO TEIXEIRA</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Rio Grande do Sul, 680</td>
+                                    <td class="px-4 py-3 text-gray-600">Panamericano</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM DEPUTADO JOACI PEREIRA</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Pedro Jorge, S/N</td>
+                                    <td class="px-4 py-3 text-gray-600">Planalto Ayrton Senna</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM DONA JÚLIA ALVES PESSOA</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua São Francisco, 125</td>
+                                    <td class="px-4 py-3 text-gray-600">Bom Jardim</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM DOUTOR GENTIL BARREIRA</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua 202 - D, S/N</td>
+                                    <td class="px-4 py-3 text-gray-600">Conj. Ceará I</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM DOUTOR UBIRAJARA ÍNDIO DO CEARÁ</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Setecentos E Cinquenta E Um, S/N</td>
+                                    <td class="px-4 py-3 text-gray-600">Conj. Ceará</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM FIGUEIREDO CORREIA</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Mal. Deodoro, 733</td>
+                                    <td class="px-4 py-3 text-gray-600">Benfica</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM JOAQUIM ALVES</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Estado do Rio, 955</td>
+                                    <td class="px-4 py-3 text-gray-600">Panamericano</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM JOSÉ LEOPOLDINO DA SILVA FILHO</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua 448 E, S/N</td>
+                                    <td class="px-4 py-3 text-gray-600">Conj. Ceará I</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM MARECHAL HUMBERTO DE ALENCAR CASTELO</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Álvaro Fernandes, 913</td>
+                                    <td class="px-4 py-3 text-gray-600">Montese</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM MICHELSON NOBRE DA SILVA</td>
+                                    <td class="px-4 py-3 text-gray-600">Av. Oscar Araripe, 3037</td>
+                                    <td class="px-4 py-3 text-gray-600">Granja Lisboa</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM PARQUE PRESIDENTE VARGAS</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Francisco Almeida, 940</td>
+                                    <td class="px-4 py-3 text-gray-600">Parque Santa Rosa (Apolo XI)</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM PAULO ELPÍDIO</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Professor Manoel de Castro, 1202</td>
+                                    <td class="px-4 py-3 text-gray-600">Jardim Jatobá</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM PROFESSORA ADALGISA BONFIM SOARES</td>
+                                    <td class="px-4 py-3 text-gray-600">Av. Penetração Oeste, 150</td>
+                                    <td class="px-4 py-3 text-gray-600">Conj. Esperança</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM PROFESSORA ADÉLIA BRASIL FEIJÓ</td>
+                                    <td class="px-4 py-3 text-gray-600">Av. Contorno Sul, 1540</td>
+                                    <td class="px-4 py-3 text-gray-600">Conj. Esperança</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM PROFESSORA DIVA CABRAL</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Holanda, 701</td>
+                                    <td class="px-4 py-3 text-gray-600">Jardim Cearense</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM PROFESSOR HERMENEGILDO FIRMEZA</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Gabriel Fiúza, 360</td>
+                                    <td class="px-4 py-3 text-gray-600">Vila Peri</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM PROFESSOR JÁDER MOREIRA DE CARVALHO</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Profa. Heloísa Ferreira Lima</td>
+                                    <td class="px-4 py-3 text-gray-600">Serrinha</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM PROFESSOR MÁRIO SCHENBERG</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Américo Rocha Lima, 835</td>
+                                    <td class="px-4 py-3 text-gray-600">Manuel Sátiro</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM SANTO AMARO</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Nova Conquista, 871</td>
+                                    <td class="px-4 py-3 text-gray-600">Bom Jardim</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI SÃO FRANCISCO DE ASSIS - BOM JARDIM</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Nereide, 320</td>
+                                    <td class="px-4 py-3 text-gray-600">Granja Portugal</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM SÃO FRANCISCO DE ASSIS - CANINDEZINHO</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua São Felipe, 564</td>
+                                    <td class="px-4 py-3 text-gray-600">Canindezinho</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEFM SÃO JOSÉ</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Comendador Garcia, 2066</td>
+                                    <td class="px-4 py-3 text-gray-600">Parque São José</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEM GOVERNADOR ADAUTO BEZERRA</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Monsenhor Liberato, 1850</td>
+                                    <td class="px-4 py-3 text-gray-600">Fátima</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEM LICEU DO CONJUNTO CEARÁ</td>
+                                    <td class="px-4 py-3 text-gray-600">R. 1139 A, 10</td>
+                                    <td class="px-4 py-3 text-gray-600">Conj. Ceará</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI CAIC MARIA ALVES CARIOCA</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Srg. Barbosa, 851</td>
+                                    <td class="px-4 py-3 text-gray-600">Granja Lisboa</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI DEPUTADO IRAPUAN CAVALCANTE PINHEIRO</td>
+                                    <td class="px-4 py-3 text-gray-600">Av. E, 305</td>
+                                    <td class="px-4 py-3 text-gray-600">Conj. Esperança</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI ESTADO DO AMAZONAS</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Monsenhor Furtado, 2327</td>
+                                    <td class="px-4 py-3 text-gray-600">Panamericano</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI ESTADO DO MARANHÃO</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Carlos Pimenta, 506</td>
+                                    <td class="px-4 py-3 text-gray-600">Mondubim</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI ESTADO DO PARANÁ</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Alberto Magno, 123</td>
+                                    <td class="px-4 py-3 text-gray-600">Bom Futuro</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI IRMÃO URBANO GONZALEZ RODRIGUEZ</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Cônego de Castro, 4055</td>
+                                    <td class="px-4 py-3 text-gray-600">Novo Mondubim</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI JENNY GOMES</td>
+                                    <td class="px-4 py-3 text-gray-600">Av. Borges de Melo, 210</td>
+                                    <td class="px-4 py-3 text-gray-600">Aeroporto</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI JOÃO MATTOS</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Almirante Rubim, 1014</td>
+                                    <td class="px-4 py-3 text-gray-600">Montese</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI LICEU PROFESSOR DOMINGOS BRASILEIRO</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Planaltina, Sn</td>
+                                    <td class="px-4 py-3 text-gray-600">Planalto Ayrton Senna</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI MARIA THOMÁSIA</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Polônia, 369</td>
+                                    <td class="px-4 py-3 text-gray-600">Parangaba</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI POETA PATATIVA DO ASSARÉ</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Descartes Braga, 4269</td>
+                                    <td class="px-4 py-3 text-gray-600">Granja Lisboa</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI PRESIDENTE HUMBERTO DE ALENCAR CASTELO BRANCO</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Irmã Bazet, 210</td>
+                                    <td class="px-4 py-3 text-gray-600">Montese</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI PROFESSORA MARIA ANTONIETA NUNES</td>
+                                    <td class="px-4 py-3 text-gray-600">R. 916, 01</td>
+                                    <td class="px-4 py-3 text-gray-600">Conj. Ceará II</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI PROFESSORA MARIA MARGARIDA DE CASTRO</td>
+                                    <td class="px-4 py-3 text-gray-600">R. das Cerejeiras, 414</td>
+                                    <td class="px-4 py-3 text-gray-600">Conj. Esperança</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI PROFESSOR CORONEL JOSÉ AURÉLIO</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Jorge Acurcio, 655</td>
+                                    <td class="px-4 py-3 text-gray-600">Vila União</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI PROFESSOR EDMILSON GUIMARÃES DE ALMEIDA</td>
+                                    <td class="px-4 py-3 text-gray-600">R. 1074, 167</td>
+                                    <td class="px-4 py-3 text-gray-600">Conj. Ceará II</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI PROFESSOR JOCIÊ CAMINHA DE MENEZES</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Itu, 120</td>
+                                    <td class="px-4 py-3 text-gray-600">Bom Jardim</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI PROFESSOR JOSÉ MARIA CAMPOS DE</td>
+                                    <td class="px-4 py-3 text-gray-600">R. 820, S/N</td>
+                                    <td class="px-4 py-3 text-gray-600">Conj. Ceará I</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI PROFESSOR PLÁCIDO ADERALDO CASTELO</td>
+                                    <td class="px-4 py-3 text-gray-600">Rua Setecentos Dezenove, 100</td>
+                                    <td class="px-4 py-3 text-gray-600">Conj. Ceará I</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI SÃO JOÃO PIAMARTA</td>
+                                    <td class="px-4 py-3 text-gray-600">Av. Aguanambi, 2479</td>
+                                    <td class="px-4 py-3 text-gray-600">Fátima</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI SENADOR FERNANDES TÁVORA</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Goiás, 141</td>
+                                    <td class="px-4 py-3 text-gray-600">Panamericano</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">EEMTI SENADOR OSIRES PONTES</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Divina, 150</td>
+                                    <td class="px-4 py-3 text-gray-600">Siqueira</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-semibold text-gray-800">INSTITUTO DE EDUCAÇÃO DO CEARÁ</td>
+                                    <td class="px-4 py-3 text-gray-600">R. Graciliano Ramos, 52</td>
+                                    <td class="px-4 py-3 text-gray-600">Fátima</td>
+                                </tr>
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <footer class="text-center mt-12 pb-4 text-xs text-gray-400">
+            Ferramenta desenvolvida pela CEFOP.
+        </footer>
+
+    </div>
+    
+    <a href="index.html" class="fixed bottom-8 right-8 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg transition duration-200 flex items-center z-50" title="Voltar ao Painel Principal">
+        <i class="fas fa-home mr-2"></i> Voltar ao Painel
+    </a>
+
+    <script>
+        // Função para expandir/recolher as seções (Acordeão)
+        function toggleAccordion(contentId) {
+            const content = document.getElementById(contentId);
+            const header = content.previousElementSibling;
+            const icon = header.querySelector('.fa-chevron-down');
+
+            // Fecha todos os outros conteúdos
+            document.querySelectorAll('.accordion-content').forEach(item => {
+                if (item.id !== contentId && item.classList.contains('active')) {
+                    item.classList.remove('active');
+                    item.previousElementSibling.querySelector('.fa-chevron-down').classList.remove('rotate-180');
+                }
+            });
+
+            // Alterna o conteúdo clicado
+            content.classList.toggle('active');
+            icon.classList.toggle('rotate-180');
+        }
+
+        // Garante que todas as seções estejam fechadas no carregamento
+        document.addEventListener('DOMContentLoaded', () => {
+             document.querySelectorAll('.accordion-header .fa-chevron-down').forEach(icon => {
+                 icon.classList.remove('rotate-180');
+             });
+        });
+    </script>
+</body>
+
+</html>

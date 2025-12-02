@@ -1,0 +1,22 @@
+{
+  "name": "cefop-tools",
+  "version": "1.0.0",
+  "description": "Ferramentas CEFOP com Serverless Functions para análise de IA.",
+  "main": "api/generate_message.js",
+  "type": "module",
+  "scripts": {
+    "start": "echo 'Inicie seu ambiente de desenvolvimento local aqui, se necessário.'"
+  },
+  "keywords": [
+    "vercel",
+    "serverless",
+    "gemini",
+    "ia",
+    "cefop"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google/genai": "^0.3.1" 
+  }
+}

@@ -1,0 +1,1829 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEFOP - Informações das Escolas da SEFOR</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"> <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fb;
+        }
+        /* Estilo para inputs no modo de edição */
+        .editable-input {
+            border: 1px solid #ccc;
+            padding: 2px 6px;
+            border-radius: 4px;
+            width: 100%;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            color: #1f2937;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-start justify-center p-4 sm:p-8">
+
+    <div class="w-full max-w-4xl bg-white shadow-2xl rounded-xl p-6 sm:p-8 mt-10">
+
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">Informações das Escolas da SEFOR</h1>
+
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6">
+            <p id="total-escolas" class="text-lg text-gray-500 font-semibold mb-2 sm:mb-0">Carregando total...</p>
+            
+            <button id="import-agenda-btn" class="bg-blue-600 hover:bg-blue-700 text-white 
+            text-sm font-semibold 
+            py-2 px-4 rounded-lg transition duration-300 shadow-md">
+                Importar agenda completa
+            </button>
+        </div>
+        
+        <div class="mb-6">
+            <label for="search-input" class="block text-sm font-medium text-gray-700 mb-2">Pesquisar por Nome da Escola (parte ou nome 
+            completo):</label>
+            <input type="text" id="search-input" placeholder="Digite pelo menos 3 letras..." class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 text-base">
+        </div>
+        
+        <div id="results-container" class="space-y-4">
+            <p class="text-gray-500">Digite pelo menos 3 letras para iniciar a busca.</p>
+        </div>
+        
+        <div class="flex justify-end mt-6">
+            <a href="index.html" class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200 flex items-center" title="Voltar à Página Inicial">
+                <i class="fas fa-home mr-2"></i> Voltar à Página Inicial
+            </a>
+        </div>
+        </div>
+
+    
+    <script>
+        // =========================================================================================
+        // === INÍCIO DO BLOCO DE DADOS: COLE AQUI SEUS 174 REGISTROS DE ESCOLA ====================
+        // =========================================================================================
+
+        const initialEscolasData = [
+// --- INICIO DOS DADOS DA SEFOR 1 ---
+{
+    sefor: "SEFOR 1",
+    nome: "CCI NORTH SHOPPING JOQUEI",
+    email: "ccijoquei@escola.ce.gov.br",
+    telefone: "3452-3886",
+    diretor: "DANIELE LIMA MIRANDA",
+    contato_diretor: "9.8808-0038 / 9.8808-0038"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "CCI RIOMAR KENNEDY",
+    email: "ccikennedy@escola.ce.gov.br",
+    telefone: "3217-1597",
+    diretor: "MARTA LEUDA LUCAS DE SOUSA",
+    contato_diretor: "9.9245-9960 / 9.9245-9960"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "CEJA – ADELINO ALCANTARA FILHO",
+    email: "cejaadelinoa@escola.ce.gov.br",
+    telefone: "3101-5681",
+    diretor: "CHRISTIAN MOREIRA DE SOUZA",
+    contato_diretor: "9.8899-0489"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "CEJA – JOSE WALTER",
+    email: "cejajwalter@escola.ce.gov.br",
+    telefone: "3101-2990",
+    diretor: "CARLOS ROBERTO NUNES CARVALHO",
+    contato_diretor: "9.8708-3399 / 9.9655-1521"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "CEJA – MILTON CUNHA",
+    email: "cejamiltoncunha@escola.ce.gov.br",
+    telefone: "3101-2075",
+    diretor: "WILSON ROCHA RODRIGUES",
+    contato_diretor: "9.8560-8755 / 9.8663-9893"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "CEJA – MONS. HELIO CAMPOS",
+    email: "cejamcampos@escola.ce.gov.br",
+    telefone: "3101-5089",
+    diretor: "YURI HARLEN VASCONCELOS",
+    contato_diretor: "9.8870-1239 / 9.8870-1239"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "CEJA – MOREIRA CAMPOS",
+    email: "mhcampos@escola.ce.gov.br",
+    telefone: "3225-2656",
+    diretor: "JOSE CARLOS VIANA ROCHA",
+    contato_diretor: "9.8605-2909 / 9.9152-5944"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "CEJA – PAULO FREIRE",
+    email: "cejapfreire@escola.ce.gov.br",
+    telefone: "3101-2700",
+    diretor: "SERGINA ARAUJO DE ALENCAR",
+    contato_diretor: "9.8650-3025"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "CEJA – PROF. EUDES VERAS",
+    email: "everas@escola.ce.gov.br",
+    telefone: "3101-4924",
+    diretor: "SAMARA MAPURUNGA DOS SANTOS SALES",
+    contato_diretor: "9.9691-8890 / 9.8614-7453"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "CEJA – PROF. GILMAR MAIA DE SOUZA",
+    email: "cejagmsousa@escola.ce.gov.br",
+    telefone: "3101-5073",
+    diretor: "AMELIA MARIA MOREIRA ROLIN",
+    contato_diretor: "9.9167-4080"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "CEJA – PROF. JOSE NEUDSON BRAGA",
+    email: "cejanbraga@escola.ce.gov.br",
+    telefone: "3101-6575",
+    diretor: "JOSE SERGIO PEREIRA DA COSTA",
+    contato_diretor: "9.9165-2227 / 9.9980-9810"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "CAIC RAIMUNDO GOMES DE CARVALHO",
+    email: "rcarvalho@escola.ce.gov.br",
+    telefone: "3101-5959",
+    diretor: "SILVIO CEZAR DE CASTRO E SANTOS",
+    contato_diretor: ""
+},
+{
+    sefor: "SEFOR 1",
+    nome: "COLEGIO DA POLICIA MILITAR",
+    email: "pmilitar@escola.ce.gov.br",
+    telefone: "3101-4335",
+    diretor: "SANDRO HERBERT FECHINE DA COSTA",
+    contato_diretor: "9.9605-8744"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "COLEGIO MILITAR DO CORPO DE BOMBEIROS",
+    email: "cbombeiros@escola.ce.gov.br",
+    telefone: "3101-2266",
+    diretor: "FRANCISCO ALBERT EINSTEIN LIMA ARRUDA",
+    contato_diretor: "9.8841-0204"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEEP DONA CREUSA DO CARMO ROCHA",
+    email: "ccarmo@escola.ce.gov.br",
+    telefone: "3101-2265",
+    diretor: "MARIA LAISSE DE CARVALHO MARIANO",
+    contato_diretor: "9.8829-8529"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEEP JOAQUIM NOGUEIRA",
+    email: "jnogueira@escola.ce.gov.br",
+    telefone: "3238-6521",
+    diretor: "REGINALDO SAMPAIO DE OLIVEIRA",
+    contato_diretor: "9.8789-2852 / 9.9867-7647"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEEP JULIA GIFFONI",
+    email: "jgiffoni@escola.ce.gov.br",
+    telefone: "3101-5078",
+    diretor: "ELIZABETH CHAGAS GOMES",
+    contato_diretor: "9.8866-2647 / 9.8789-2852"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEEP MARWIN",
+    email: "marvin@escola.ce.gov.br",
+    telefone: "3101-5088",
+    diretor: "ANA FABIOLA RIBEIRO DE SOUSA",
+    contato_diretor: "9.9628-2820"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEEP PAULO PETROLA",
+    email: "paulopetrola@escola.ce.gov.br",
+    telefone: "3238-6592",
+    diretor: "TATIANE CRUZ DA COSTA",
+    contato_diretor: "9.9912-6740"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEEP PRES. ROOSEVELT",
+    email: "proosevelt@escola.ce.gov.br",
+    telefone: "3101-2254",
+    diretor: "JOAO GUTEMBERG NOBRE SIMPLICIO",
+    contato_diretor: "9.9123-6573"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEFM DEP. FRANCISCO DE ALMEIDA MONTE",
+    email: "amonte@escola.ce.gov.br",
+    telefone: "3101-2692",
+    diretor: "JACSON MUNIZ DA SILVA",
+    contato_diretor: "8.7376-035"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEFM DOM HELDER CAMARA",
+    email: "dhelder@escola.ce.gov.br",
+    telefone: "3101-5584",
+    diretor: "FRANCISCO DAVID PEREIRA DA SILVA",
+    contato_diretor: "9.9244-9449"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEFM DOM HELIO CAMPOS",
+    email: "dhcampos@escola.ce.gov.br",
+    telefone: "3101-2264",
+    diretor: "KLECIA MARIA MESQUITA DE SOUSA",
+    contato_diretor: "9.9960-0635 / 9.8749-2143"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEFM FELIX DE AZEVEDO",
+    email: "fazevedo@escola.ce.gov.br",
+    telefone: "3101-2208",
+    diretor: "JOAO BATISTA NETO",
+    contato_diretor: ""
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEFM FERNANDO CAVALCANTE MOTA",
+    email: "cmota@escola.ce.gov.br",
+    telefone: "3101-2705",
+    diretor: "ALESSANDRO DE CASTRO AQUINO",
+    contato_diretor: "9.9951-0376"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEFM GOV. FLAVIO MARCILIO",
+    email: "fmarcilio@escola.ce.gov.br",
+    telefone: "3101-2794",
+    diretor: "TITO LIVIO CARVALHO BEZERRA",
+    contato_diretor: "9.8612-2949"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEFM HERACLITO DE CASTRO E SILVA",
+    email: "csilva@escola.ce.gov.br",
+    telefone: "3101-5670",
+    diretor: "FRANCISCO ROMULO COSTA FEITOSA",
+    contato_diretor: "9.8861-3958"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEFM JESUS MARIA JOSE",
+    email: "jmjose@escola.ce.gov.br",
+    telefone: "3101-2698",
+    diretor: "MARIA DE FATIMA DOS SANTOS CAETANO",
+    contato_diretor: "9.8797-5538"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEFM JOAO PAULO II",
+    email: "jpsegundo@escola.ce.gov.br",
+    telefone: "3496-7945",
+    diretor: "MARIA DO SOCORRO TAVARES DE SOUSA",
+    contato_diretor: "9.8784-1399"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEFM JOSE WALDEMAR DE ALCANTARA E SILVA",
+    email: "walcantara@escola.ce.gov.br",
+    telefone: "3101-5679",
+    diretor: "MARIA DE LOURDES DA SILVA",
+    contato_diretor: "9.8748-0339 / 9.9955-6684"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEFM MARIO HUGO CIDRACK DO VALE",
+    email: "mcidrack@escola.ce.gov.br",
+    telefone: "3101-5068",
+    diretor: "JOELMA ANASTACIO CARVALHO",
+    contato_diretor: "9.8208-2779"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEFM PATRONATO DA SAGRADA FAMILIA",
+    email: "patronato@escola.ce.gov.br",
+    telefone: "3101-5087",
+    diretor: "ALANA SOUZA DE OLIVEIRA VICTORIANO",
+    contato_diretor: "9.8736-7615"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEFM SAO JOSE DO PICI DAS PEDREIRAS",
+    email: "jpici@escola.ce.gov.br",
+    telefone: "3101-5687",
+    diretor: "ALVARO ROBERTO PEIXOTO TORRES",
+    contato_diretor: "9.8821-2195"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEM DR. CESAR CALS",
+    email: "ccals@escola.ce.gov.br",
+    telefone: "3101-2379",
+    diretor: "ANA CRISTINA DA COSTA",
+    contato_diretor: "9.9619-2838"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEM MARIANO MARTINS",
+    email: "mmartins@escola.ce.gov.br",
+    telefone: "3101-5682",
+    diretor: "SKENE HESS AMORIM PEREIRA",
+    contato_diretor: "9.8682-8878"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEMTI ANTONIETA SIQUEIRA",
+    email: "asiqueira@escola.ce.gov.br",
+    telefone: "3101-5673",
+    diretor: "ANTONIO SERGIO LIMA DE ALBUQUERQUE",
+    contato_diretor: "9.8749-0360"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEMTI ANTONIO BEZERRA",
+    email: "abezerra@escola.ce.gov.br",
+    telefone: "3212-6728",
+    diretor: "TERCIA MARIA MACHADO SOUSA",
+    contato_diretor: "9.8843-7639"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEMTI ANTONIO SALES",
+    email: "asales@escola.ce.gov.br",
+    telefone: "3101-2263",
+    diretor: "RAFAEL FERREIRA NOGUEIRA",
+    contato_diretor: "9.8804-6369"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEMTI AYRTON SENNA DA SILVA",
+    email: "asenna@escola.ce.gov.br",
+    telefone: "3101-5674",
+    diretor: "MARCUS ANDRE SAMPAIO CAVALCANTE",
+    contato_diretor: "9.8808-4513"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEMTI CLAUDIO MARTINS",
+    email: "cmartins@escola.ce.gov.br",
+    telefone: "3101-2258",
+    diretor: "FRANCISCO CLAUDIO RODRIGUES",
+    contato_diretor: "9.8821-2706 / 9.9694-0870"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEMTI DONA HILZA DIOGO DE OLIVEIRA",
+    email: "hdiogo@escola.ce.gov.br",
+    telefone: "3101-7829",
+    diretor: "ANTONIO WELLINGTON DE SOUZA COSTA",
+    contato_diretor: "9.8834-0128"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEMTI DONA MARIA MENEZES DE SERPA",
+    email: "mmserpa@escola.ce.gov.br",
+    telefone: "3101-2695",
+    diretor: "ANTONIO ENIS DO NASCIMENTO",
+    contato_diretor: "9.8542-5461"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEMTI ESTADO DE ALAGOAS",
+    email: "ealagoas@escola.ce.gov.br",
+    telefone: "3101-2704",
+    diretor: "JOSE WILLIAM MATIAS BARROS",
+    contato_diretor: "9.9685-4901"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEMTI GAL. EUDORO CORREA",
+    email: "eudoroc@escola.ce.gov.br",
+    telefone: "3101-6592",
+    diretor: "JULARA CAVALCANTE CRUZ",
+    contato_diretor: "9.125-4821"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEMTI HERMINIO BARROSO",
+    email: "hbarroso@escola.ce.gov.br",
+    telefone: "3101-2703",
+    diretor: "SEBASTIAO LEME DE VASCONCELOS FILHO",
+    contato_diretor: "9.8824-9812"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEMTI JOSE BEZERRA DE MENEZES",
+    email: "jbezerra@escola.ce.gov.br",
+    telefone: "3101-5082",
+    diretor: "PEDRO HENRIQUE BALDUINO DE QUEIROZ",
+    contato_diretor: "9.8531-6897"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEMTI JOSE VALDO RIBEIRO RAMOS",
+    email: "wramos@escola.ce.gov.br",
+    telefone: "3101-2872",
+    diretor: "PAULO ROBERTO ANGELO DA SILVA",
+    contato_diretor: "9.9876-3124 / 9.8763-1240"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEMTI LICEU VILA VELHA",
+    email: "liceuvvelha@escola.ce.gov.br",
+    telefone: "3282-7798",
+    diretor: "MARIA DO SOCORRO OLIVEIRA TABOSA",
+    contato_diretor: "9.8834-8783"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEMTI LIONS JANGADA",
+    email: "ljangada@escola.ce.gov.br",
+    telefone: "3101-5076",
+    diretor: "RAFAEL OLIVEIRA FREITAS",
+    contato_diretor: "9.8838-4189 / 9.8897-0750"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEMTI MOEMA TAVORA",
+    email: "mtavora@escola.ce.gov.br",
+    telefone: "3101-2386",
+    diretor: "FABIOLA MARIA MOREIRA DOS SANTOS",
+    contato_diretor: "9.9913-4147"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEMTI MONS. DOURADO",
+    email: "mdourado@escola.ce.gov.br",
+    telefone: "3101-2706",
+    diretor: "SORAIDE PAZ DE OLIVEIRA LIMA",
+    contato_diretor: "9.8715-5577 / 9.9982-2416"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEMTI PROF. PAULO FREIRE",
+    email: "pfreire@escola.ce.gov.br",
+    telefone: "3496-8554",
+    diretor: "JOAO FERNANDES TEIXEIRA NETO",
+    contato_diretor: "9.8609-2332 / 9.8609-2332"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEMTI PROF. BALBINA JUCA ALBUQUERQUE",
+    email: "bjuca@escola.ce.gov.br",
+    telefone: "3101-2697",
+    diretor: "MARCELO HENRIQUE ARAUJO DE SOUSA",
+    contato_diretor: "9.8832-6188"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEMTI PROF. MARIA JOSE SANTOS FERREIRA GOMES",
+    email: "ceremjose@escola.ce.gov.br",
+    telefone: "3101-7634",
+    diretor: "DANILO DE AZEVEDO BATISTA",
+    contato_diretor: "9.9798-8783"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEMTI SAO JOSE DOS ARPOADORES",
+    email: "jarpoadores@escola.ce.gov.br",
+    telefone: "3101-2694",
+    diretor: "ANTONIA MARIA DA COSTA MENDES DE MESQUITA",
+    contato_diretor: "9.8630-1299"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEMTI SALES CAMPOS",
+    email: "scampos@escola.ce.gov.br",
+    telefone: "3101-2390",
+    diretor: "RAIMUNDO GONCALVES DOS SANTOS JUNIOR",
+    contato_diretor: "9.8842-9353"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEMTI SANTO AFONSO",
+    email: "safonso@escola.ce.gov.br",
+    telefone: "3101-2260",
+    diretor: "SHEYLLA BARROS ANDRADE SOUSA SALES",
+    contato_diretor: "9.8842-6004"
+},
+{
+    sefor: "SEFOR 1",
+    nome: "EEMTI WALDEMAR FALCAO",
+    email: "vfalcao@escola.ce.gov.br",
+    telefone: "3101-2690",
+    diretor: "RAFAEL SOARES DA SILVA PAIVA",
+    contato_diretor: "9.8879-0277"
+}
+// --- FIM DOS DADOS DA SEFOR 1 ---
+
+// --- INICIO DOS DADOS DA SEFOR 2 ---
+,
+{
+    sefor: "SEFOR 2",
+    nome: "CCI RIOMAR FORTALEZA",
+    email: "ccipapicu@escola.ce.gov.br",
+    telefone: "3265-1864",
+    diretor: "",
+    contato_diretor: ""
+},
+{
+    sefor: "SEFOR 2",
+    nome: "CCI VIA SUL SHOPPING",
+    email: "ccisul@escola.ce.gov.br",
+    telefone: "3048-1300",
+    diretor: "",
+    contato_diretor: ""
+},
+{
+    sefor: "SEFOR 2",
+    nome: "COLEGIO ESTADUAL JUSTINIANO DE SERPA",
+    email: "jserpa@escola.ce.gov.br",
+    telefone: "3101-5093",
+    diretor: "CICERO ONOFRE DE SOUSA",
+    contato_diretor: "9.8103-2212"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEEP COMENDADOR MIGUEL GURGEL",
+    email: "miguelgurgel@escola.ce.gov.br",
+    telefone: "3101-2071",
+    diretor: "RAFAEL SILVA",
+    contato_diretor: "9.9291-4901"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEEP JAIME ALENCAR DE OLIVEIRA",
+    email: "eeepjaime.alencar@escola.ce.gov.br",
+    telefone: "3273-6853",
+    diretor: "BRENA DE LIMA REIS DOS SANTOS",
+    contato_diretor: "9.9984-7962"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEEP JOAQUIM ANTONIO ALBANO",
+    email: "jalbano@escola.ce.gov.br",
+    telefone: "3101-2072",
+    diretor: "RAIMUNDA MARGARETH DE OLIVEIRA",
+    contato_diretor: "9.9730-2211"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEEP JOSE DE BARCELOS",
+    email: "jbarcelos@escola.ce.gov.br",
+    telefone: "3101-2163",
+    diretor: "MARCOS RANGEL PEREIRA",
+    contato_diretor: "9.9116-3750"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEEP MARIA ANGELA DA SILVEIRA BORGES",
+    email: "angelaborges@escola.ce.gov.br",
+    telefone: "3248-8250",
+    diretor: "Camila Bandeira Cunha",
+    contato_diretor: "9.8606-9214"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEEP MARIA JOSE MEDEIROS",
+    email: "mmedeiros@escola.ce.gov.br",
+    telefone: "3101-3155",
+    diretor: "DAMILSON SANTOS DA SILVA",
+    contato_diretor: "9.9998-0807"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEEP MARIO ALENCAR",
+    email: "marioalencar@escola.ce.gov.br",
+    telefone: "3275-6593",
+    diretor: "MAYUMI PASSOS LOPES",
+    contato_diretor: "9.8763-9362"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEFM ALMIRANTE TAMANDARE",
+    email: "atamandare@escola.ce.gov.br",
+    telefone: "3101-6139",
+    diretor: "ALAN TAVARES RIBEIRO",
+    contato_diretor: "9.9792-7806"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEFM ANTONIO DIAS MACEDO",
+    email: "admacedo@escola.ce.gov.br",
+    telefone: "3101-3020",
+    diretor: "EVILANE ALVES DE ARUJO MOREL",
+    contato_diretor: "9.8811-6307"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEFM ARQUITETO ROGERIO FROES",
+    email: "rfroes@escola.ce.gov.br",
+    telefone: "3101-7916",
+    diretor: "ROGERS SOUSA DE OLIVEIRA",
+    contato_diretor: "9.9625-2065"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEFM BARBARA DE ALENCAR",
+    email: "balencar@escola.ce.gov.br",
+    telefone: "3101-7071",
+    diretor: "NADIA RODRIGUES DA SILVA",
+    contato_diretor: "9.9988-0328"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEFM CLOVIS BEVILAQUIA",
+    email: "cbevilaqua@escola.ce.gov.br",
+    telefone: "3101-5080",
+    diretor: "CARLOS HENRIQUE RODRIGUES SAMPAIO",
+    contato_diretor: "9.8784-0765"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEFM CONSTANCA TAVORA",
+    email: "ctavora@escola.ce.gov.br",
+    telefone: "3101-3078",
+    diretor: "JOAO PAULO DA GUIA ALVES",
+    contato_diretor: "9.9978-1223"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEFM DEP. MANOEL RODRIGUES",
+    email: "mrodrigues@escola.ce.gov.br",
+    telefone: "3101-7918",
+    diretor: "OLAVO TEIXEIRA DOS ANJOS",
+    contato_diretor: "9.9984-6590"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEFM DRA. ALDACI BARBOSA",
+    email: "abarbosa@escola.ce.gov.br",
+    telefone: "3101-3397",
+    diretor: "MORGANA REBOUCAS DE QUEIROZ E SILVA",
+    contato_diretor: "9.9769-1035 / morgana"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEFM GEN. MURILO BORGES MOREIRA",
+    email: "mborges@escola.ce.gov.br",
+    telefone: "3101-1390",
+    diretor: "LINDEMBERG SANTOS SILVA",
+    contato_diretor: "9.8181-5129"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEFM JOSE DE ALENCAR",
+    email: "jalencar@escola.ce.gov.br",
+    telefone: "3101-2076",
+    diretor: "MAURILIO DA SILVA SOUSA",
+    contato_diretor: "9.8824-5108"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEFM LUIZA TAVORA – PIO XII",
+    email: "ltavora@escola.ce.gov.br",
+    telefone: "3101-2065",
+    diretor: "Ivan Bezerra Quevedo Filho",
+    contato_diretor: "9.8795-9293"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEFM LUIZA TAVORA – PROMORAR",
+    email: "ltpromorar@escola.ce.gov.br",
+    telefone: "3101-2069",
+    diretor: "SEMIA PAULA GONCALVES FELIX SERPA",
+    contato_diretor: "9.9932-4408"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEFM NOEL HUGNEN DE OLIVEIRA PAIVA",
+    email: "nhugnen@escola.ce.gov.br",
+    telefone: "3101-6154",
+    diretor: "ALYSON RAQUEL SILVA FIALHO",
+    contato_diretor: "9.9412-3838"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEFM OTAVIO TERCEIRO DE FARIAS",
+    email: "otaviot@escola.ce.gov.br",
+    telefone: "3101-2979",
+    diretor: "LWDYVILLA BEZERRA FARIAS",
+    contato_diretor: "9.8829-8952"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEFM PADRE ROCHA",
+    email: "procha@escola.ce.gov.br",
+    telefone: "3101-5075",
+    diretor: "REGIA LIMA LEITAO",
+    contato_diretor: "9.9178-1789"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEFM PAROQUIA DA PAZ",
+    email: "ppaz@escola.ce.gov.br",
+    telefone: "3101-1394",
+    diretor: "ELIANA MARTINS CAVALCANTE",
+    contato_diretor: "9.8892-4010"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEFM POLIVALENTE MODELO DE FORTALEZA",
+    email: "polivalentemf@escola.ce.gov.br",
+    telefone: "3101-3096",
+    diretor: "Cintia Kelly Nogueira Sabino",
+    contato_diretor: "9.8827-2051"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEFM PROF. ALOYSIO BARROS LEAL",
+    email: "ableal@escola.ce.gov.br",
+    telefone: "3269-7070",
+    diretor: "TANIA MARIA DE SOUSA BARBOSA FARIAS",
+    contato_diretor: "9.8502-5514"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEFM PROF. PAULO AYRTON ARAUJO",
+    email: "payrton@escola.ce.gov.br",
+    telefone: "3101-2066",
+    diretor: "WELLINGTON SAMPAIO VIEIRA JUNIOR",
+    contato_diretor: "9.9996-3754"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEFM PROF. MARIA DA CONCEICAO PORFIRIO TELES",
+    email: "pteles@escola.ce.gov.br",
+    telefone: "3101-6138",
+    diretor: "ANTONIO CARLOS DA SILVA LIMA FILHO",
+    contato_diretor: "9.9630-9712"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEFM PROF. MARIA GONCALVES",
+    email: "mgoncalves@escola.ce.gov.br",
+    telefone: "3101-3048",
+    diretor: "LORENA CAVALCANTE LIMA DE FREITAS",
+    contato_diretor: "9.8722-3901"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEFM SANTA LUZIA",
+    email: "sluzia@escola.ce.gov.br",
+    telefone: "3101-5085",
+    diretor: "PAULA ANDREA DE OLIVEIRA DANTAS",
+    contato_diretor: "9.8689-9979"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEM LICEU DE MESSEJANA",
+    email: "liceum@escola.ce.gov.br",
+    telefone: "3101-2077",
+    diretor: "Francisco Oliveira Pascoal Junior",
+    contato_diretor: "9.9812-7979"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEMTI COLEGIO ESTADUAL LICEU DO CEARA",
+    email: "lceara@escola.ce.gov.br",
+    telefone: "3101-2262",
+    diretor: "EDSON MORAIS DE FREITAS BRAGA",
+    contato_diretor: "9.8525-1301"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEMTI DEP. PAULINO ROCHA",
+    email: "paulinorocha@escola.ce.gov.br",
+    telefone: "3101-3047",
+    diretor: "LEILIANE FACANHA DE OLIVEIRA",
+    contato_diretor: "9.8972-4401"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEMTI DEP. PAULO BENEVIDES",
+    email: "pbenevides@escola.ce.gov.br",
+    telefone: "3101-2164",
+    diretor: "ALDIRA RAQUEL PAULA MAIA",
+    contato_direto: "9.9609-1124"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEMTI DOM ANTONIO DE ALMEIDA LUSTOSA",
+    email: "amlustosa@escola.ce.gov.br",
+    telefone: "3101-2171",
+    diretor: "HERBTY MARQUES GOMES",
+    contato_diretor: "9.8861-0010"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEMTI DRAGAO DO MAR",
+    email: "dmar@escola.ce.gov.br",
+    telefone: "3101-1392",
+    diretor: "BRENO RICARDO OLIVEIRA MARQUES",
+    contato_diretor: "9.8889-0716"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEMTI ESTADO DO PARA",
+    email: "estpara@escola.ce.gov.br",
+    telefone: "3101-2168",
+    diretor: "JARSON RAIMUNDO BONFIM RODRIGUES",
+    contato_diretor: "9.8846-8898"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEMTI GOV. LUIZ GONZAGA FONSECA MOTA",
+    email: "gmota@escola.ce.gov.br",
+    telefone: "3452-6184",
+    diretor: "MARIA DE FATIMA BEZERRA",
+    contato_diretor: "9.8525-2822"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEMTI GOV. VIRGILIO TAVORA",
+    email: "vtavora@escola.ce.gov.br",
+    telefone: "3101-2064",
+    diretor: "NILOURDES MARIA LAURIANO VIEIRA",
+    contato_diretor: "9.8916-4483"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEMTI HELENITA MOTA",
+    email: "hmota@escola.ce.gov.br",
+    telefone: "3101-1389",
+    diretor: "WILDEMAR BEZERRA DOS SANTOS",
+    contato_diretor: "9.8826-6955"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEMTI INTEGRADA 02 DE MAIO",
+    email: "2demaio@escola.ce.gov.br",
+    telefone: "3101-3076",
+    diretor: "JOENE MARIA UCHOA",
+    contato_diretor: "9.8885-9120"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEMTI IRACEMA",
+    email: "iracema@escola.ce.gov.br",
+    telefone: "3101-2068",
+    diretor: "SHIRLEIDE COSTA DOS SANTOS BARBOSA",
+    contato_diretor: "9.8675-2414"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEMTI JOAO NOGUEIRA JUCA",
+    email: "jnjuca@escola.ce.gov.br",
+    telefone: "3101-2159",
+    diretor: "CLAUDIA PIRES DE OLIVEIRA LOPES",
+    contato_diretor: "9.8818-3890"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEMTI JOHNSON",
+    email: "johnson@escola.ce.gov.br",
+    telefone: "3101-6153",
+    diretor: "ADRIANA FREITAS COSTA LIMA",
+    contato_diretor: "9.9917-1362"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEMTI MATIAS BECK",
+    email: "mbeck@escola.ce.gov.br",
+    telefone: "3101-7072",
+    diretor: "VIRGINIA VILAGRAN PINHEIRO",
+    contato_diretor: "9.9942-9292"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEMTI MIRIAN PORTO MOTA",
+    email: "mpmota@escola.ce.gov.br",
+    telefone: "3101-2185",
+    diretor: "FELIPE D ANGELO HOLANDA",
+    contato_diretor: "9.8929-8159"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEMTI PADRE GUILHERME WASSEN",
+    email: "gwaessen@escola.ce.gov.br",
+    telefone: "3101-3049",
+    diretor: "ONDINA MARIA DE FREITAS LUZ",
+    contato_diretor: "9.9742-6962"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEFM PADRE MARCELINO CHAMPAGNAT",
+    email: "pmarcelino@escola.ce.gov.br",
+    telefone: "3101-2067",
+    diretor: "EDINA MARIA JULIAO DA COSTA",
+    contato_diretor: "9.8517-1785"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEMTI POETA OTACILIO COLARES",
+    email: "ocolares@escola.ce.gov.br",
+    telefone: "3101-2161",
+    diretor: "VERA SILVIA PEREIRA PIRES",
+    contato_diretor: "9.8898-8745"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEMTI PROF FERNANDA MARIA GOMES DE AMORIM",
+    email: "",
+    telefone: "",
+    diretor: "",
+    contato_diretor: ""
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEMTI PROF TECLA FERREIRA",
+    email: "tferreira@escola.ce.gov.br",
+    telefone: "3101-7803",
+    diretor: "VANDERLEI DA SILVA LIMA",
+    contato_diretor: "9.9877-02594"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEMTI PROF TELINA BARBOSA DA COSTA",
+    email: "tbarbosa@escola.ce.gov.br",
+    telefone: "3101-2074",
+    diretor: "RAFAEL BARBOSA DOS SANTOS",
+    contato_diretor: "9.8880-5549"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEMTI RENATO BRAGA",
+    email: "rbraga@escola.ce.gov.br",
+    telefone: "3101-7920",
+    diretor: "MARTA SIMONE",
+    contato_diretor: "9.9696-3834"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEMTI VISCONDE DO RIO BRANCO",
+    email: "vrbranco@escola.ce.gov.br",
+    telefone: "3101-7638",
+    diretor: "ALNEDI COSTA LIMA",
+    contato_diretor: "9.9964-1099"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "EEMTI WALTER DE SA CAVALCANTE",
+    email: "wscavalcante@escola.ce.gov.br",
+    telefone: "3101-2165",
+    diretor: "CYNTIA KELLY DE SOUSA LOPES",
+    contato_diretor: "9.8702-6639"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "INSTITUTO CEARENSE DE EDUCACAO DE SURDOS",
+    email: "isurdos@escola.ce.gov.br",
+    telefone: "3101-1391",
+    diretor: "LILIAN DE SA LEITE",
+    contato_diretor: "9.8829-3316"
+},
+{
+    sefor: "SEFOR 2",
+    nome: "INSTITUTO DOS CEGOS",
+    email: "icegos@escola.ce.gov.br",
+    telefone: "3101-5083",
+    diretor: "SAMIA MARIA BENICIO ARAUJO QUINDERE",
+    contato_diretor: "9.8894-1038"
+}
+// --- FIM DOS DADOS DA SEFOR 2 ---
+
+// --- INICIO DOS DADOS DA SEFOR 3 ---
+,
+{
+    sefor: "SEFOR 3",
+    nome: "CCI CONJUNTO CEARA",
+    email: "cciconjuntoceara@escola.ce.gov.br",
+    telefone: "3218-6834",
+    diretor: "KATIA MAGNO DO VALE ABREU",
+    contato_diretor: "9.7889-2294"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "CCI SHOPPING BENFICA",
+    email: "ccibenfica@escola.ce.gov.br",
+    telefone: "3223-3432",
+    diretor: "IVE MARIAN DE ABREU",
+    contato_diretor: "9.9925-6583"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEEP DARCY RIBEIRO",
+    email: "darcyribeiro@escola.ce.gov.br",
+    telefone: "3292-2326",
+    diretor: "MARIA DE CASTRO DAMAZIO QUEIROZ",
+    contato_diretor: "9.9983-9767"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEEP ICARO DE SOUSA",
+    email: "icarosm@escola.ce.gov.br",
+    telefone: "3101-7749",
+    diretor: "KARLENA RAQUEL FERREIRA UNIAS",
+    contato_diretor: "9.8791-3185"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEEP JOAQUIM MOREIRA DE SOUSA",
+    email: "jmsousa@escola.ce.gov.br",
+    telefone: "3101-2980",
+    diretor: "MARTA VERONICA CORREIA RIBEIRO",
+    contato_diretor: "9.9650-0910"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEEP JUAREZ TAVORA",
+    email: "jtavora@escola.ce.gov.br",
+    telefone: "3271-6529",
+    diretor: "CORINA BASTOS BITU",
+    contato_diretor: "9.8808-9088"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEEP LEONEL DE MOURA BRIZOLA",
+    email: "leonelbrizola@escola.ce.gov.br",
+    telefone: "3101-3594",
+    diretor: "RUBENS ANDRE NOGUEIRA E SILVA",
+    contato_diretor: "9.8818-4397"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEEP PAULO VI",
+    email: "paulovi@escola.ce.gov.br",
+    telefone: "3101-7823",
+    diretor: "ANA MARIA TOMAZ DE VASCONCELOS",
+    contato_diretor: "9.9989-2121"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEEP PROF. CESAR CAMPELO",
+    email: "uv5ccampelo@escola.ce.gov.br",
+    telefone: "3294-5288",
+    diretor: "FRANKLIN DE ANDRADE CARNEIRO",
+    contato_diretor: "9.8754-7189"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEEP PROF. ONELIO PORTO",
+    email: "oneliop@escola.ce.gov.br",
+    telefone: "3101-2984",
+    diretor: "SHEYLA SOCORRO SALES GAMA",
+    contato_diretor: "9.8554-6004"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEFM DEP. JOACI PEREIRA",
+    email: "joacip@escola.ce.gov.br",
+    telefone: "3101-2994",
+    diretor: "AURISETE MARIA DE ARAUJO COSTA",
+    contato_diretor: "9.8837-5202"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEFM DIVA CABRAL",
+    email: "divacabral@escola.ce.gov.br",
+    telefone: "3101-5084",
+    diretor: "FRANCILIANE ALBUQUERQUE FORMIGA",
+    contato_diretor: "9.8860-9943"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEFM DR. GENTIL BARREIRA",
+    email: "uv2gentilb@escola.ce.gov.br",
+    telefone: "3294-4523",
+    diretor: "ELIAS DA SILVA BRAGA",
+    contato_diretor: "9.8664-9703"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEFM DR. UBIRAJARA INDIO DO CEARA",
+    email: "uv7ubirajara@escola.ce.gov.br",
+    telefone: "3101-5595",
+    diretor: "KARLA VIRGINIA DA SILVA PINTO",
+    contato_diretor: "9.9921-4650"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEFM FIGUEIREDO CORREIA",
+    email: "figueiredo@escola.ce.gov.br",
+    telefone: "3101-2387",
+    diretor: "MARCEL ROMUALDO GUIMARAES PIMENTA",
+    contato_diretor: "9.9960-69983"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEFM HERMENEGILDO FIRMEZA",
+    email: "hermenegildo@escola.ce.gov.br",
+    telefone: "3101-3073",
+    diretor: "JOSE WOJTYLA PINHEIRO VIEIRA",
+    contato_diretor: "9.9225-3069"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEFM JADER MOREIRA DE CARVALHO",
+    email: "jadermc@escola.ce.gov.br",
+    telefone: "3101-2993",
+    diretor: "MARILIA DE LIMA COSTA",
+    contato_diretor: "9.9983-9767"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEFM JOAQUIM ALVES",
+    email: "joaquimalves@escola.ce.gov.br",
+    telefone: "3101-5672",
+    diretor: "ALINE SOARES VERISSIMO",
+    contato_diretor: "9.9773-2609"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEFM JOSE LEOPOLDINO DA SILVA",
+    email: "uv4leopoldino@escola.ce.gov.br",
+    telefone: "3101-5680",
+    diretor: "OLAVO FALCAO MARTINS",
+    contato_diretor: "9.9165-6346"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEFM DONA JULIA ALVES PESSOA",
+    email: "juliaalves@escola.ce.gov.br",
+    telefone: "3101-6114",
+    diretor: "CRISTIANO DE OLIVEIRA",
+    contato_diretor: "9.8618-4693"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEFM MARIO SCHEMBERG",
+    email: "mschemberg@escola.ce.gov.br",
+    telefone: "3101-2978",
+    diretor: "YURY UCHOA DA SILVA",
+    contato_diretor: "8.5987-274177"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEFM MICHELSON NOBRE DA SILVA",
+    email: "michelson@escola.ce.gov.br",
+    telefone: "3101-6120",
+    diretor: "ADRIANA ALBUQUERQUE PEDROSA",
+    contato_diretor: "9.8898-3492"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEFM PARQUE PRESIDENTE VARGAS",
+    email: "vargas@escola.ce.gov.br",
+    telefone: "3101-3074",
+    diretor: "MARCELO PAIVA DO NASCIMENTO",
+    contato_diretor: "9.8681-7937"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEFM PAULO ELPIDIO",
+    email: "pauloelpidio@escola.ce.gov.br",
+    telefone: "3101-6121",
+    diretor: "JORGEMBERG COSTA MARQUES",
+    contato_diretor: "9.9723-7918"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEFM SANTO AMARO",
+    email: "santoamaro@escola.ce.gov.br",
+    telefone: "3101-6119",
+    diretor: "CELIA MARIA VIANA DE ARAUJO",
+    contato_diretor: "8.5996-059383"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEFM SAO FRANCISCO DE ASSIS – CANINDEZINHO",
+    email: "sfassiscan@escola.ce.gov.br",
+    telefone: "3101-6112",
+    diretor: "JULIO CESAR ALMEIDA PALHANO",
+    contato_diretor: "9.8900-5606"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEFM SAO JOSE",
+    email: "saojose@escola.ce.gov.br",
+    telefone: "3101-3046",
+    diretor: "LIDIANE MARIA GOMES MOURA",
+    contato_diretor: "9.9963-1958"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEM GOV. ADAUTO BEZERRA",
+    email: "adautob@escola.ce.gov.br",
+    telefone: "3101-2073",
+    diretor: "HUMBERTO ANTONIO NUNES MENDES",
+    contato_diretor: "9.9674-2108"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEMTI PROF. ADELIA BRASIL FEĲO",
+    email: "adeliab@escola.ce.gov.br",
+    telefone: "3101-3075",
+    diretor: "FRANCISCO CLAUDIO COSTA DE FREITAS",
+    contato_diretor: "9.8684-3242"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEMTI PROF. ADALGISA BONFIM SOARES",
+    email: "adalgisa@escola.ce.gov.br",
+    telefone: "3101-5091",
+    diretor: "ROGERIO SILVA CARDOSO",
+    contato_diretor: "9.9996-3067"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEMTI ANISIO TEIXEIRA",
+    email: "anisiot@escola.ce.gov.br",
+    telefone: "3101-2996",
+    diretor: "SAMIA DE SOUSA LIMA QUEIROZ",
+    contato_diretor: "9.8770-7061"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEMTI ESTADO DO AMAZONAS",
+    email: "amazonas@escola.ce.gov.br",
+    telefone: "3101-2991",
+    diretor: "DOROTEIA EMILIA RIBEIRO SAYED",
+    contato_diretor: "9.8731-2543"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEMTI ESTADO DO MARANHAO",
+    email: "maranhao@escola.ce.gov.br",
+    telefone: "3101-2981",
+    diretor: "FELIPE NEO DOS SANTOS",
+    contato_diretor: "9.8821-1582"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEMTI ESTADO DO PARANA",
+    email: "parana@escola.ce.gov.br",
+    telefone: "3101-5074",
+    diretor: "MA NAZARE GUEDES ARAUJO",
+    contato_diretor: "9.9730-5212"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEMTI IRAPUAN CAVALCANTE PINHEIRO",
+    email: "irapuanc@escola.ce.gov.br",
+    telefone: "3101-2985",
+    diretor: "MARCIA MARIA VIEIRA MARTINS",
+    contato_diretor: "8.5998-036518"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEMTI IRMAO URBANO GONZALEZ ROGRIGUEZ",
+    email: "iurbano@escola.ce.gov.br",
+    telefone: "3101-5079",
+    diretor: "MARCIA VANESSA FELIX DE ANDRADE",
+    contato_diretor: "9.8642-0433"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEMTI JENNY GOMES",
+    email: "jennygomes@escola.ce.gov.br",
+    telefone: "3101-2166",
+    diretor: "MARCOS ANTONIO BEZERRA COSTA",
+    contato_diretor: "9.9645-1940"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEMTI JOAO MATTOS",
+    email: "jmatos@escola.ce.gov.br",
+    telefone: "3101-2977",
+    diretor: "MARIA DO SOCORRO NOGUEIRA DE PAULA",
+    contato_diretor: "9.8833-1070"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEMTI JOSE AURELIO CAMARA",
+    email: "jacamara@escola.ce.gov.br",
+    telefone: "3101-7807",
+    diretor: "ELIANE ALMEIDA DE LIMA",
+    contato_diretor: "9.8601-1041"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEMTI LICEU PROF. DOMINGOS BRASILEIRO",
+    email: "liceupantanal@escola.ce.gov.br",
+    telefone: "3473-1523",
+    diretor: "DENISE PINHEIRO SILVESTRE",
+    contato_diretor: "9.8892-1384"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEMTI MAL. HUMBERTO DE ALENCAR CASTELO BRANCO",
+    email: "mcastelobranco@escola.ce.gov.br",
+    telefone: "3101-2982",
+    diretor: "ALINE DA SILVA MACHADO DE OLIVEIRA",
+    contato_diretor: "9.8890-0314"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEMTI MARIA ALVES CARIOCA",
+    email: "caicmacarioca@escola.ce.gov.br",
+    telefone: "3101-6122",
+    diretor: "JOAO EVANGELISTA DA SILVA DIAS",
+    contato_diretor: "9.8708-2901"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEMTI MARIA MARGARIDA DE CASTRO ALMEIDA",
+    email: "mmca@escola.ce.gov.br",
+    telefone: "3296-9829",
+    diretor: "AMSTERDAN FERREIRA REBOUCAS",
+    contato_diretor: "9.8860-4444"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEMTI MARIA THOMASIA",
+    email: "mthomasia@escola.ce.gov.br",
+    telefone: "3101-7753",
+    diretor: "FRANCISCA MOREIRA DOS SANTOS",
+    contato_diretor: "9.8631-4350"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEMTI PLACIDO ADERALDO CASTELO",
+    email: "uv7placido@escola.ce.gov.br",
+    telefone: "3101-5683",
+    diretor: "ANTELVIANA BEZERRA DE MENEZES",
+    contato_diretor: "9.8871-3092"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEMTI POETA PATATIVA DO ASSARE",
+    email: "patativa@escola.ce.gov.br",
+    telefone: "3101-6115",
+    diretor: "MESSIAS DA SILVA BRAGA",
+    contato_diretor: "9.8757-1566"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEMTI PRES. HUMBERTO DE ALENCAR CASTELO BRANCO",
+    email: "pcastelobranco@escola.ce.gov.br",
+    telefone: "3101-2987",
+    diretor: "CLEUTON GOMES BARBOSA",
+    contato_diretor: "9.8965-7967"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEMTI PROF. EDMILSON GUIMARAES DE ALMEIDA",
+    email: "uv10edmilson@escola.ce.gov.br",
+    telefone: "3101-5676",
+    diretor: "IVANA GARCIA LIMA",
+    contato_diretor: "9.8697-6697"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEMTI PROF. JOCIE CAMINHA DE MENESES",
+    email: "jociec@escola.ce.gov.br",
+    telefone: "3101-6116",
+    diretor: "MARIA ENEDITE MADEIRA DO NASCIMENTO",
+    contato_diretor: "9.8811-5492"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEMTI PROF. JOSE MARIA CAMPOS",
+    email: "uv8mcampos@escola.ce.gov.br",
+    telefone: "3101-5965",
+    diretor: "PATRESE ALEXANDRE SOUSA",
+    contato_diretor: "9.8889-1618"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEMTI PROF. MARIA ANTONIETA NUNES",
+    email: "uv9anunes@escola.ce.gov.br",
+    telefone: "3101-5960",
+    diretor: "DIANA MEMDES ROCHA",
+    contato_diretor: "9.8793-31282"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEMTI SAO FRANCISCO DE ASSIS – BOM JARDIM",
+    email: "sfassis@escola.ce.gov.br",
+    telefone: "3101-6118",
+    diretor: "LUCAS SOUSA DOS SANTOS",
+    contato_diretor: "9.8501-8606"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEMTI SAO JOAO DO PIAMARTA",
+    email: "sjpiamarta@escola.ce.gov.br",
+    telefone: "3101-3693",
+    diretor: "NORMA MARIA DE OLIVEIRA ARRUDA",
+    contato_diretor: "9.8674-5585"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEMTI SEN. FERNANDES TAVORA",
+    email: "ftavora@escola.ce.gov.br",
+    telefone: "3101-2986",
+    diretor: "ANA LUCIA VIEIRA DE LIMA",
+    contato_diretor: "9.8606-7318"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEMTI SEN. OSIRES PONTES",
+    email: "osiresp@escola.ce.gov.br",
+    telefone: "3101-6113",
+    diretor: "ADRIANA LOPES VIEIRA",
+    contato_diretor: "9.8821-3343"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "EEMTI LICEU DO CONJUNTO CEARA",
+    email: "liceucc@escola.ce.gov.br",
+    telefone: "3101-5594",
+    diretor: "ESTEFANIA SOARES MENEZES DE SOUSA ALMEIDA",
+    contato_diretor: "9.8754-9323"
+},
+{
+    sefor: "SEFOR 3",
+    nome: "INSTITUTO DE EDUCACAO",
+    email: "iec@escola.ce.gov.br",
+    telefone: "3101-2070",
+    diretor: "MIGUEL TEIXEIRA DE ABREU",
+    contato_diretor: "9.8877-0030"
+}
+// --- FIM DOS DADOS DA SEFOR 3 ---
+];
+
+        // =========================================================================================
+        // === FIM DO BLOCO DE DADOS ===============================================================
+        // =========================================================================================
+
+        let dataArray = [];
+        const LOCAL_STORAGE_KEY = 'escolas_data_updated';
+        const searchInput = document.getElementById('search-input');
+        const resultsContainer = document.getElementById('results-container');
+        const totalEscolasElement = document.getElementById('total-escolas');
+        const importAgendaBtn = document.getElementById('import-agenda-btn'); 
+        
+        // Cor para os detalhes das escolas (pode ser ajustada)
+        const detailTextColor = 'text-gray-600'; 
+
+
+        /**
+         * 1. Carrega os dados das escolas (preferindo o localStorage) e inicializa.
+         */
+        function loadData() {
+            const storedData = localStorage.getItem(LOCAL_STORAGE_KEY);
+            let escolasFonte;
+            if (storedData) {
+                try {
+                    // Tenta carregar do localStorage
+                    escolasFonte = JSON.parse(storedData);
+                } catch (e) {
+                    // Se falhar, usa os dados iniciais
+                    escolasFonte = initialEscolasData;
+                }
+            } else {
+                // Se não houver nada no storage, usa os dados iniciais
+                escolasFonte = initialEscolasData;
+            }
+
+            dataArray = escolasFonte;
+            
+            // Adiciona um ID único para facilitar a manipulação e salvamento
+            dataArray = dataArray.map((escola, index) => ({ 
+                ...escola, 
+                data_id: escola.nome ? escola.nome.replace(/\s/g, '_') : index 
+            }));
+
+            if (dataArray.length > 0) {
+                totalEscolasElement.textContent = `Total de Escolas Registradas: ${dataArray.length}`;
+            } else {
+                totalEscolasElement.textContent = "Erro: Dados das escolas não encontrados ou vazios.";
+                totalEscolasElement.classList.add('text-red-500');
+            }
+            // REMOVIDO: A chamada searchAndRender() para que a lista não apareça na inicialização.
+        }
+
+        /**
+         * 2. Salva o array atualizado no localStorage.
+         */
+        function saveData() {
+            // Remove a chave interna 'data_id' antes de salvar
+            const dataToSave = dataArray.map(e => {
+                const { data_id, ...rest } = e;
+                return rest;
+            });
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(dataToSave));
+        }
+
+        /**
+         * 3. Filtra os dados com base no input de pesquisa e renderiza a lista.
+         */
+        function searchAndRender() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            
+            if (searchTerm.length < 3 && searchTerm.length > 0) {
+                resultsContainer.innerHTML = `<p class="text-gray-500">Continue digitando... (3 letras ou mais)</p>`;
+                return;
+            } else if (searchTerm.length === 0 && dataArray.length > 0) {
+                // Não exibe nada se não houver termo de busca, conforme orientação anterior.
+                resultsContainer.innerHTML = `<p class="text-gray-500">Digite pelo menos 3 letras para iniciar a busca.</p>`;
+                return;
+            } else if (searchTerm.length === 0 && dataArray.length === 0) {
+                // Caso não tenha dados e não haja busca
+                 resultsContainer.innerHTML = `<p class="text-gray-500">Nenhum dado de escola carregado. Cole seus dados no script e recarregue a página.</p>`;
+                return;
+            }
+
+            const filteredSchools = dataArray.filter(escola => {
+                return escola.nome.toLowerCase().includes(searchTerm);
+            });
+
+            if (filteredSchools.length === 0) {
+                resultsContainer.innerHTML = `<p class="text-red-500 font-medium">Nenhuma escola encontrada com o nome "${searchTerm}".</p>`;
+            } else {
+                renderSchoolList(filteredSchools);
+            }
+        }
+
+        /**
+         * 4. Gera o HTML para a lista de escolas.
+         */
+        function renderSchoolList(schools) {
+            let listHtml = '';
+            schools.forEach((escola, index) => {
+                listHtml += generateSchoolListItem(escola, detailTextColor, index);
+            });
+
+            resultsContainer.innerHTML = `
+                <p class="text-sm text-gray-600 mb-2 font-medium">Exibindo ${schools.length} escolas:</p>
+                <div class="border border-gray-200 rounded-xl shadow-md overflow-hidden bg-white divide-y divide-gray-200">
+                    ${listHtml}
+                </div>
+            `;
+            addSchoolActionListeners();
+        }
+
+        /**
+         * 5. Gera o HTML para um item da lista (Visualização e Edição).
+         */
+        function generateSchoolListItem(escola, detailTextColor, index) {
+            const schoolIndex = index !== undefined ? index + 1 : '';
+            
+            // Tenta obter o valor usando 'contato_diretor', ou 'celular', ou 'telefone_diretor' (o que existir)
+            const diretorContatoValue = escola.contato_diretor ||
+                                        escola.celular ||
+                                        escola.telefone_diretor || 
+                                        'N/A';
+
+            return `
+                <li id="school-${escola.data_id}" class="school-list-item p-4 transition duration-150 ease-in-out hover:bg-gray-50 data-id-${escola.data_id}" data-id="${escola.data_id}">
+                    <div class="font-semibold text-gray-800 mb-2">
+                        ${schoolIndex ? `${schoolIndex}. ` : ''} ${escola.nome} 
+                        <span class="text-xs font-medium text-gray-500 ml-2">(${escola.sefor || 'Regional N/A'})</span>
+                    </div>
+
+                    <div class="view-mode space-y-1 text-sm">
+                        <div class="flex flex-wrap gap-x-4">
+                            <span class="${detailTextColor} font-medium">E-mail:</span>
+                            <span data-field="email">${escola.email || 'N/A'}</span>
+                        </div>
+                        <div class="flex flex-wrap gap-x-4">
+                            <span class="${detailTextColor} font-medium">Telefone:</span>
+                            <span data-field="telefone">${escola.telefone || 'N/A'}</span>
+                        </div>
+                        <div class="flex flex-wrap gap-x-4">
+                            <span class="${detailTextColor} font-medium">Diretor(a):</span>
+                            <span data-field="diretor">${escola.diretor || 'N/A'}</span>
+                        </div>
+                        <div class="flex flex-wrap gap-x-4">
+                            <span class="${detailTextColor} font-medium">Contato Diretor(a):</span>
+                            <span data-field="contato_diretor">${diretorContatoValue}</span>
+                        </div>
+                        <button class="edit-btn mt-3 text-xs bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-1 px-3 rounded transition duration-200">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                    </div>
+                    
+                    <div class="edit-mode space-y-2 text-sm hidden">
+                        <div class="flex flex-col">
+                            <label class="${detailTextColor} font-medium mb-1">E-mail:</label>
+                            <input type="email" data-field="email" value="${escola.email || ''}" class="editable-input">
+                        </div>
+                        <div class="flex flex-col">
+                            <label class="${detailTextColor} font-medium mb-1">Telefone:</label>
+                            <input type="text" data-field="telefone" value="${escola.telefone || ''}" class="editable-input">
+                        </div>
+                        <div class="flex flex-col">
+                            <label class="${detailTextColor} font-medium mb-1">Diretor(a):</label>
+                            <input type="text" data-field="diretor" value="${escola.diretor || ''}" class="editable-input">
+                        </div>
+                        <div class="flex flex-col">
+                            <label class="${detailTextColor} font-medium mb-1">Contato Diretor(a):</label>
+                            <input type="text" data-field="contato_diretor" value="${diretorContatoValue !== 'N/A' ? diretorContatoValue : ''}" class="editable-input">
+                            <p class="text-xs text-gray-500 mt-1">Prefira o formato: (DDD) 9.1234-5678 / (DDD) 9.1234-5678</p>
+                        </div>
+                        <div class="mt-4 space-x-2">
+                            <button class="save-btn text-xs bg-green-500 hover:bg-green-600 text-white font-medium py-1 px-3 rounded transition duration-200">
+                                <i class="fas fa-save"></i> Salvar
+                            </button>
+                            <button class="cancel-btn text-xs bg-gray-400 hover:bg-gray-500 text-white font-medium py-1 px-3 rounded transition duration-200">
+                                <i class="fas fa-times"></i> Cancelar
+                            </button>
+                        </div>
+                    </div>
+                </li>
+            `;
+        }
+
+        /**
+         * 6. Adiciona listeners para os botões de Edição/Salvar/Cancelar.
+         */
+        function addSchoolActionListeners() {
+            document.querySelectorAll('.school-list-item').forEach(listItem => {
+                const dataId = listItem.getAttribute('data-id');
+                const escola = dataArray.find(e => e.data_id === dataId);
+
+                if (!escola) return;
+
+                // Botão de Edição
+                listItem.querySelector('.edit-btn')?.addEventListener('click', () => {
+                    enterEditMode(listItem, escola);
+                });
+
+                // Botão de Salvar
+                listItem.querySelector('.save-btn')?.addEventListener('click', () => {
+                    saveChanges(listItem, escola);
+                });
+
+                // Botão de Cancelar
+                listItem.querySelector('.cancel-btn')?.addEventListener('click', () => {
+                    exitEditMode(listItem, escola);
+                });
+            });
+        }
+
+        /**
+         * 7. Entra no modo de edição.
+         */
+        function enterEditMode(listItem, escola) {
+            listItem.querySelector('.view-mode').classList.add('hidden');
+            listItem.querySelector('.edit-mode').classList.remove('hidden');
+            
+            // Re-popula os inputs com os valores atuais para garantir consistência
+            const inputs = listItem.querySelectorAll('.edit-mode input');
+            const diretorContatoValue = escola.contato_diretor || escola.celular || escola.telefone_diretor || '';
+
+            inputs.forEach(input => {
+                const field = input.getAttribute('data-field');
+                if (field === 'contato_diretor') {
+                    input.value = diretorContatoValue;
+                } else if (escola[field] !== undefined) {
+                    input.value = escola[field];
+                }
+            });
+        }
+
+        /**
+         * 8. Sai do modo de edição.
+         */
+        function exitEditMode(listItem, escola) {
+            listItem.querySelector('.edit-mode').classList.add('hidden');
+            listItem.querySelector('.view-mode').classList.remove('hidden');
+        }
+
+        /**
+         * 9. Salva as alterações feitas no modo de edição.
+         */
+        function saveChanges(listItem, escola) {
+            const inputs = listItem.querySelectorAll('.edit-mode input');
+            let updated = false;
+
+            inputs.forEach(input => {
+                const field = input.getAttribute('data-field');
+                const newValue = input.value.trim();
+                
+                // Trata a entrada de contato do diretor, priorizando 'contato_diretor'
+                if (field === 'contato_diretor') {
+                    if (escola.contato_diretor !== newValue) {
+                        escola.contato_diretor = newValue;
+                        // Limpa campos alternativos se o campo principal for usado, para evitar redundância
+                        escola.celular = undefined; 
+                        escola.telefone_diretor = undefined;
+                        updated = true;
+                    }
+                } else if (escola[field] !== newValue) {
+                    escola[field] = newValue;
+                    updated = true;
+                }
+            });
+
+            if (updated) {
+                saveData();
+                // Re-renderiza a lista para refletir as alterações no modo de visualização
+                searchAndRender(); 
+
+                alert(`Informação da escola "${escola.nome}" atualizada e salva no seu navegador.`);
+            } else {
+                alert('Nenhuma alteração detectada.');
+                // Se não houver alteração, apenas sai do modo de edição
+                exitEditMode(listItem, escola); 
+            }
+        }
+
+        /**
+         * 10. Funções para Exportar em CSV
+         */
+        function convertToCSV(objArray) {
+            const array = typeof objArray !== 'object' ? JSON.parse(objArray) : objArray;
+            let str = '';
+
+            // Cabeçalho (chaves do primeiro objeto)
+            let header = Object.keys(array[0] || {}).join(';');
+            str += header + '\r\n';
+
+            // Dados
+            array.forEach(obj => {
+                let row = Object.values(obj).map(value => {
+                    // Trata valores nulos/vazios
+                    if (value === null || value === undefined) return '';
+                    // Coloca aspas se o valor contiver o separador (;) ou quebra de linha
+                    let val = String(value).replace(/"/g, '""'); // Escapa aspas
+                    if (val.includes(';') || val.includes('\n')) {
+                        return `"${val}"`;
+                    }
+                    return val;
+                }).join(';');
+                str += row + '\r\n';
+            });
+
+            // Ajuste para garantir que o CSV seja formatado corretamente para o Excel (separador ;)
+            let csvString = "data:text/csv;charset=utf-8,\uFEFF" + header.split(';').join(';') + '\n';
+
+            array.forEach(obj => {
+                let row = Object.values(obj).map(value => {
+                    if (value === null || value === undefined) return '';
+                    let val = String(value).replace(/"/g, '""');
+                    if (val.includes(';')) {
+                        return `"${val}"`;
+                    }
+                    return val;
+                }).join(';');
+                csvString += row + '\n';
+            });
+
+            return csvString;
+        }
+
+        function exportToCSV() {
+            // Pega os dados limpos (sem a chave interna data_id)
+            const exportData = dataArray.map(e => {
+                const { data_id, ...rest } = e;
+                return rest;
+            });
+
+            if(exportData.length === 0) {
+                 alert('Não há dados para exportar. Cole seus dados no script e recarregue a página antes de exportar.');
+                 return;
+            }
+
+            const csvContent = convertToCSV(exportData);
+            
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'agenda_escolas_completa.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            alert('Arquivo CSV com a agenda completa gerado com sucesso!');
+        }
+
+        // =========================================================================================
+        // === LISTENERS E INICIALIZAÇÃO ===========================================================
+        // =========================================================================================
+        
+        searchInput.addEventListener('input', searchAndRender);
+        importAgendaBtn.addEventListener('click', exportToCSV); // Listener para o novo botão
+        
+        loadData();
+    </script>
+</body>
+</html>
